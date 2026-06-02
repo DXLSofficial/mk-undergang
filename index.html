@@ -48,8 +48,28 @@
             border-radius: 6px;
             text-align: center;
             font-size: 1.1rem;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
+        
+        /* ESTILO NUEVO PARA LA OPCION RECUERDAME */
+        .contenedor-recuerdame {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+            color: #aaa;
+            cursor: pointer;
+            user-select: none;
+        }
+        .contenedor-recuerdame input {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            accent-color: #4af;
+        }
+
         .btn-bloqueo {
             background-color: #4af;
             color: #fff;
@@ -268,26 +288,28 @@
         }
     </style>
 
-    <!-- LIBRERÍAS DE CONEXIÓN CON FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
 
-    <!-- PANTALLA DE ACCESO PRIVADO -->
     <div id="pantalla-bloqueo-global">
         <div class="caja-bloqueo">
             <h3>Acceso Privado</h3>
             <p style="color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Esta clasificación es privada. Introduce la contraseña.</p>
             <input type="password" id="clave-acceso-crew" class="input-bloqueo" placeholder="Contraseña..." onkeydown="evaluarEnterBloqueo(event)">
+            
+            <label class="contenedor-recuerdame">
+                <input type="checkbox" id="check-recuerdame"> Recuerdame en este dispositivo
+            </label>
+
             <button class="btn-bloqueo" onclick="verificarAccesoGlobal()">Entrar a la Pista</button>
         </div>
     </div>
 
-    <!-- CONTENIDO PROTEGIDO -->
     <div id="contenido-principal" style="display:none;">
-        <h2>|| Clasificación de Mario Kart Wii: Deluxe X ||</h2>
-        <div class="subtitulo">Sincronizado en Tiempo Real</div>
+        <h2>|| Clasificación de Mario Kart: Live X ||</h2>
+        <div class="subtitulo">Sincronizado en Tiempo Real para la Crew</div>
 
         <div class="container">
             <div class="fila-header" id="tabla-header"></div>
@@ -346,9 +368,16 @@
 
         function verificarAccesoGlobal() {
             const input = document.getElementById('clave-acceso-crew');
+            const checkRecuerdame = document.getElementById('check-recuerdame');
+            
             if (input.value === CLAVE_CREW_SISTEMA) {
-                // Guardar sesión de la Crew exitosa
-                localStorage.setItem('sesion_crew_valida', CLAVE_CREW_SISTEMA);
+                // Si marcó la casilla "Recuérdame", guardamos el token en memoria
+                if (checkRecuerdame.checked) {
+                    localStorage.setItem('sesion_crew_valida', CLAVE_CREW_SISTEMA);
+                } else {
+                    // Si no la marcó, nos aseguramos de borrar cualquier rastro viejo
+                    localStorage.removeItem('sesion_crew_valida');
+                }
                 desvanecerBloqueo();
                 conectarFirebase();
             } else {
@@ -385,15 +414,12 @@
         }
         db = firebase.database();
         
-        // Sincronizar contraseñas en vivo y verificar sesiones guardadas
         db.ref('configuracion/claves').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 if (data.crew) CLAVE_CREW_SISTEMA = data.crew;
                 if (data.admin) CLAVE_SECRETA_ADMIN = data.admin;
             }
-            
-            // Chequear si el usuario ya tenía sesión iniciada previamente
             comprobarSesionesGuardadas();
         });
 
@@ -401,12 +427,10 @@
             const guardadaCrew = localStorage.getItem('sesion_crew_valida');
             const guardadaAdmin = localStorage.getItem('sesion_admin_valida');
 
-            // Si la clave guardada coincide con la actual de la base de datos, entra directo
             if (guardadaCrew === CLAVE_CREW_SISTEMA) {
                 desvanecerBloqueo();
                 conectarFirebase();
 
-                // Si también tenía sesión de admin iniciada, la reactiva directamente
                 if (guardadaAdmin === CLAVE_SECRETA_ADMIN && !modoAdminActivo) {
                     activarInterfazAdmin();
                 }
@@ -443,13 +467,13 @@
             if (!modoAdminActivo) {
                 const intento = prompt("Introduce la contraseña de administrador:");
                 if (intento === CLAVE_SECRETA_ADMIN) {
+                    // Al ser admin, por comodidad siempre te recordará en tu PC de edición
                     localStorage.setItem('sesion_admin_valida', CLAVE_SECRETA_ADMIN);
                     activarInterfazAdmin();
                 } else if (intento !== null) {
                     alert("Contraseña incorrecta.");
                 }
             } else {
-                // Al cerrar voluntariamente, se destruye la sesión persistente de admin
                 modoAdminActivo = false;
                 localStorage.removeItem('sesion_admin_valida');
                 document.documentElement.style.setProperty('--columnas-estructura', '0.5fr 1.5fr 0.8fr 1fr 1.2fr');
@@ -483,9 +507,10 @@
                 .then(() => {
                     alert(`¡Cambio exitoso! Clave de ${tipo === 'crew' ? 'Entrada Crew' : 'Administrador'} actualizada.`);
                     
-                    // Actualizar los localStorages locales para no perder la sesión propia tras el cambio
                     if(tipo === 'crew') {
-                        localStorage.setItem('sesion_crew_valida', nuevaClave);
+                        if (localStorage.getItem('sesion_crew_valida')) {
+                            localStorage.setItem('sesion_crew_valida', nuevaClave);
+                        }
                     } else {
                         localStorage.setItem('sesion_admin_valida', nuevaClave);
                     }
