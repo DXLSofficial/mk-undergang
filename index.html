@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clasificación de Mario Kart: Live X</title>
+    <title>Clasificación de Mario Kart Wii: Deluxe X</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -48,28 +48,8 @@
             border-radius: 6px;
             text-align: center;
             font-size: 1.1rem;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
         }
-        
-        /* ESTILO NUEVO PARA LA OPCION RECUERDAME */
-        .contenedor-recuerdame {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 18px;
-            font-size: 0.9rem;
-            color: #aaa;
-            cursor: pointer;
-            user-select: none;
-        }
-        .contenedor-recuerdame input {
-            cursor: pointer;
-            width: 16px;
-            height: 16px;
-            accent-color: #4af;
-        }
-
         .btn-bloqueo {
             background-color: #4af;
             color: #fff;
@@ -86,7 +66,7 @@
         #contenido-principal {
             display: none; 
             width: 100%;
-            max-width: 950px;
+            max-width: 980px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -120,8 +100,9 @@
             position: relative;
         }
         
+        /* Ajustamos las columnas para dar espacio a los dos inputs */
         :root {
-            --columnas-estructura: 0.5fr 1.5fr 0.8fr 1fr 1.2fr;
+            --columnas-estructura: 0.5fr 1.3fr 0.8fr 0.8fr 1fr 1fr 1.1fr 1.1fr;
         }
 
         .fila-header {
@@ -212,6 +193,9 @@
             font-weight: bold;
             font-size: 1rem;
         }
+        .input-sumar-carrera.race-input {
+            color: #ff9f43;
+        }
         
         .admin-detalles {
             margin-top: 20px;
@@ -296,20 +280,15 @@
     <div id="pantalla-bloqueo-global">
         <div class="caja-bloqueo">
             <h3>Acceso Privado</h3>
-            <p style="color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Esta clasificación es privada. Introduce la contraseña.</p>
+            <p style="color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Esta clasificación es privada. Introduce la contraseña para entrar.</p>
             <input type="password" id="clave-acceso-crew" class="input-bloqueo" placeholder="Contraseña..." onkeydown="evaluarEnterBloqueo(event)">
-            
-            <label class="contenedor-recuerdame">
-                <input type="checkbox" id="check-recuerdame"> Recuerdame en este dispositivo
-            </label>
-
             <button class="btn-bloqueo" onclick="verificarAccesoGlobal()">Entrar a la Pista</button>
         </div>
     </div>
 
     <div id="contenido-principal" style="display:none;">
-        <h2>|| Clasificación de Mario Kart: Live X ||</h2>
-        <div class="subtitulo">Sincronizado en Tiempo Real para la Crew</div>
+        <h2>|| Clasificación de Mario Kart Wii: Deluxe X ||</h2>
+        <div class="subtitulo">Sincronizado en Tiempo Real</div>
 
         <div class="container">
             <div class="fila-header" id="tabla-header"></div>
@@ -366,18 +345,23 @@
             document.getElementById('contenido-principal').style.display = 'flex';
         }
 
+        // --- FILTRO DE SESIÓN INSTANTÁNEO ---
+        if (localStorage.getItem('sesion_usuario_activa') === 'true') {
+            document.write('<style>#pantalla-bloqueo-global { display: none !important; } #contenido-principal { display: flex !important; }</style>');
+            window.addEventListener('DOMContentLoaded', () => {
+                desvanecerBloqueo();
+                inicializarTodo();
+            });
+        } else {
+            window.addEventListener('DOMContentLoaded', () => {
+                inicializarTodo();
+            });
+        }
+
         function verificarAccesoGlobal() {
             const input = document.getElementById('clave-acceso-crew');
-            const checkRecuerdame = document.getElementById('check-recuerdame');
-            
             if (input.value === CLAVE_CREW_SISTEMA) {
-                // Si marcó la casilla "Recuérdame", guardamos el token en memoria
-                if (checkRecuerdame.checked) {
-                    localStorage.setItem('sesion_crew_valida', CLAVE_CREW_SISTEMA);
-                } else {
-                    // Si no la marcó, nos aseguramos de borrar cualquier rastro viejo
-                    localStorage.removeItem('sesion_crew_valida');
-                }
+                localStorage.setItem('sesion_usuario_activa', 'true');
                 desvanecerBloqueo();
                 conectarFirebase();
             } else {
@@ -386,7 +370,7 @@
             }
         }
 
-        // --- CONFIGURACIÓN DE FIREBASE ---
+        // --- CONEXIÓN DE FIREBASE ---
         const firebaseConfig = {
             apiKey: "AIzaSyBaFKG2YA1AGiVWsAmqjWzewGWXq8Szsu0",
             authDomain: "mariokart-live.firebaseapp.com",
@@ -409,31 +393,22 @@
         const iconoCandado = document.getElementById('icono-candado');
         const textoCandado = document.getElementById('texto-candado');
 
-        if (firebase.apps.length === 0) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        db = firebase.database();
-        
-        db.ref('configuracion/claves').on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                if (data.crew) CLAVE_CREW_SISTEMA = data.crew;
-                if (data.admin) CLAVE_SECRETA_ADMIN = data.admin;
+        function inicializarTodo() {
+            if (firebase.apps.length === 0) {
+                firebase.initializeApp(firebaseConfig);
             }
-            comprobarSesionesGuardadas();
-        });
-
-        function comprobarSesionesGuardadas() {
-            const guardadaCrew = localStorage.getItem('sesion_crew_valida');
-            const guardadaAdmin = localStorage.getItem('sesion_admin_valida');
-
-            if (guardadaCrew === CLAVE_CREW_SISTEMA) {
-                desvanecerBloqueo();
-                conectarFirebase();
-
-                if (guardadaAdmin === CLAVE_SECRETA_ADMIN && !modoAdminActivo) {
-                    activarInterfazAdmin();
+            db = firebase.database();
+            
+            db.ref('configuracion/claves').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    if (data.crew) CLAVE_CREW_SISTEMA = data.crew;
+                    if (data.admin) CLAVE_SECRETA_ADMIN = data.admin;
                 }
+            });
+
+            if (localStorage.getItem('sesion_usuario_activa') === 'true') {
+                conectarFirebase();
             }
         }
 
@@ -455,7 +430,7 @@
 
         function activarInterfazAdmin() {
             modoAdminActivo = true;
-            document.documentElement.style.setProperty('--columnas-estructura', '0.5fr 1.5fr 0.9fr 0.9fr 1fr 1.2fr 1.2fr');
+            document.documentElement.style.setProperty('--columnas-estructura', '0.5fr 1.3fr 0.8fr 0.8fr 1fr 1fr 1.1fr 1.1fr');
             btnCandado.classList.add('activo');
             iconoCandado.innerText = "🔓";
             textoCandado.innerText = "Cerrar Admin";
@@ -467,15 +442,12 @@
             if (!modoAdminActivo) {
                 const intento = prompt("Introduce la contraseña de administrador:");
                 if (intento === CLAVE_SECRETA_ADMIN) {
-                    // Al ser admin, por comodidad siempre te recordará en tu PC de edición
-                    localStorage.setItem('sesion_admin_valida', CLAVE_SECRETA_ADMIN);
                     activarInterfazAdmin();
                 } else if (intento !== null) {
                     alert("Contraseña incorrecta.");
                 }
             } else {
                 modoAdminActivo = false;
-                localStorage.removeItem('sesion_admin_valida');
                 document.documentElement.style.setProperty('--columnas-estructura', '0.5fr 1.5fr 0.8fr 1fr 1.2fr');
                 btnCandado.classList.remove('activo');
                 iconoCandado.innerText = "🔒";
@@ -506,15 +478,6 @@
             db.ref(nodoDestino).set(nuevaClave)
                 .then(() => {
                     alert(`¡Cambio exitoso! Clave de ${tipo === 'crew' ? 'Entrada Crew' : 'Administrador'} actualizada.`);
-                    
-                    if(tipo === 'crew') {
-                        if (localStorage.getItem('sesion_crew_valida')) {
-                            localStorage.setItem('sesion_crew_valida', nuevaClave);
-                        }
-                    } else {
-                        localStorage.setItem('sesion_admin_valida', nuevaClave);
-                    }
-
                     document.getElementById('nueva-clave-valor').value = "";
                     document.getElementById('confirmar-admin-actual').value = "";
                 })
@@ -547,6 +510,7 @@
             });
         }
 
+        // --- RENDERIZADO DE TABLA ---
         function renderTabla() {
             const posicionesViejas = {};
             jugadores.forEach(j => {
@@ -561,9 +525,11 @@
 
             if (modoAdminActivo) {
                 tablaHeader.innerHTML = `
-                    <div>Pos</div><div style="text-align: left;">Jugador</div><div>🏆 Copas</div><div>Modificar</div><div>🏁 Carreras</div><div>📊 Total Pts</div><div>➕ Añadir Pts</div>
+                    <div>Pos</div><div style="text-align: left;">Jugador</div><div>🏆 Copas</div><div>Modif.</div><div>🏁 Carreras</div><div>📊 Total Pts</div><div>➕ Carreras</div><div>➕ Puntos</div>
                 `;
             } else {
+                // Modo espectador estándar de 5 columnas
+                document.documentElement.style.setProperty('--columnas-estructura', '0.5fr 1.5fr 0.8fr 1fr 1.2fr');
                 tablaHeader.innerHTML = `
                     <div>Pos</div><div style="text-align: left;">Jugador</div><div>🏆 Copas</div><div>🏁 Carreras</div><div>📊 Total Pts</div>
                 `;
@@ -597,12 +563,14 @@
                             <button class="btn-accion btn-mas" onclick="modificarCopas('${jugador.firebaseKey}', 1)">+</button>
                             <button class="btn-accion btn-menos" onclick="modificarCopas('${jugador.firebaseKey}', -1)">-</button>
                         </div>
-                        <div class="control-valores">
-                            <button class="btn-accion btn-menos" style="width:20px; height:20px; font-size:0.8rem;" onclick="modificarCarreras('${jugador.firebaseKey}', -1)">-</button>
-                            <span class="total-carreras-num">${jugador.carreras}</span>
-                            <button class="btn-accion btn-mas" style="width:20px; height:20px; font-size:0.8rem;" onclick="modificarCarreras('${jugador.firebaseKey}', 1)">+</button>
-                        </div>
+                        <div class="total-carreras-num">${jugador.carreras}</div>
                         <div class="total-carrera">${jugador.carreraTotal} pts</div>
+                        
+                        <div>
+                            <input type="number" id="race-${jugador.id}" class="input-sumar-carrera race-input" placeholder="+ tracks"
+                                   onkeydown="chequearEnterRace(event, ${jugador.id})" onblur="procesarSumaCarreras('${jugador.firebaseKey}', ${jugador.id})">
+                        </div>
+                        
                         <div>
                             <input type="number" id="add-${jugador.id}" class="input-sumar-carrera" placeholder="+ pts"
                                    onkeydown="chequearEnter(event, ${jugador.id})" onblur="procesarSuma('${jugador.firebaseKey}', ${jugador.id})">
@@ -620,6 +588,7 @@
                 tablaBody.appendChild(fila);
             });
 
+            // Animación física de posiciones
             jugadores.forEach(j => {
                 const el = document.getElementById(`jugador-${j.id}`);
                 const posVieja = posicionesViejas[j.id];
@@ -645,11 +614,43 @@
             }
         }
 
-        function modificarCarreras(firebaseKey, cantidad) {
-            const j = jugadores.find(x => x.firebaseKey === firebaseKey);
-            if (j && db) {
-                j.carreras = Math.max(0, j.carreras + cantidad);
-                mandarANube(j);
+        // CONTROL NUEVO: PROCESAR ENTRADA MANUAL DE CARRERAS
+        function chequearEnterRace(event, id) {
+            if (event.key === 'Enter') document.getElementById(`race-${id}`).blur();
+        }
+
+        function procesarSumaCarreras(firebaseKey, id) {
+            const input = document.getElementById(`race-${id}`);
+            if (!input || input.value === "") return;
+            const valor = parseInt(input.value);
+            input.value = "";
+
+            if (!isNaN(valor) && valor !== 0) {
+                const j = jugadores.find(x => x.firebaseKey === firebaseKey);
+                if (j) {
+                    j.carreras = Math.max(0, j.carreras + valor);
+                    mandarANube(j);
+                }
+            }
+        }
+
+        // CONTROL DE PUNTOS EXISTENTE
+        function chequearEnter(event, id) {
+            if (event.key === 'Enter') document.getElementById(`add-${id}`).blur();
+        }
+
+        function procesarSuma(firebaseKey, id) {
+            const input = document.getElementById(`add-${id}`);
+            if (!input || input.value === "") return;
+            const valor = parseInt(input.value);
+            input.value = "";
+
+            if (!isNaN(valor) && valor !== 0) {
+                const j = jugadores.find(x => x.firebaseKey === firebaseKey);
+                if (j) {
+                    j.carreraTotal = Math.max(0, j.carreraTotal + valor);
+                    mandarANube(j);
+                }
             }
         }
 
@@ -677,25 +678,6 @@
             const j = jugadores.find(x => x.firebaseKey === key);
             if (confirm(`¿Seguro que quieres eliminar a ${j.nombre}?`)) {
                 db.ref('jugadores/' + key).remove();
-            }
-        }
-
-        function chequearEnter(event, id) {
-            if (event.key === 'Enter') document.getElementById(`add-${id}`).blur();
-        }
-
-        function procesarSuma(firebaseKey, id) {
-            const input = document.getElementById(`add-${id}`);
-            if (!input || input.value === "") return;
-            const valor = parseInt(input.value);
-            input.value = "";
-
-            if (!isNaN(valor) && valor !== 0) {
-                const j = jugadores.find(x => x.firebaseKey === firebaseKey);
-                if (j) {
-                    j.carreraTotal = Math.max(0, j.carreraTotal + valor);
-                    mandarANube(j);
-                }
             }
         }
 
