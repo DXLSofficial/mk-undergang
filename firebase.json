@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "mariokart-live",
+  "private_key_id": "852c632616f827feb98cf623b160e30af2c33091",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC15o8mu7fB8IYs\nFzvkTzx93OiMFS8pJNgtRV0OYNEadODGwLRAHqbo8lN4kKl+Ul2AAjpiuDgYwfIr\nSADOutK4IrYwT1ZvdvCXeOZ9Sr68GwPAeQMn52a9YHbppnhlmAYOgIQadae17rEf\nLrM70owsTTBF5vkw0mXRhLPClhdtB3t29eOjJpHluvD18g01LzIiZrgSmPJWgpHj\noQdKZViinV4QjjlB3xSKE06lQVUYcx/nS7MC5++J4en1d8XTPbOOD+S8+frftcD8\n35l3q7PDTrylUIxnjSZ0BHZsBeM2Unb2tO8WCzkukmXFSjMZGCPrLS3rkcgrw7zC\nSDuCRZIpAgMBAAECggEACnpIXqPLduli4SFJeuIxitJxtrf1qnoL1be8H3rmMI7w\n76HkABmD5cEnm7dBfBxEdH4sXMlduddaGrIgEchjIOYm9mtrgCoqu57kL+1hRTaN\nJcYSr3a9zUTENLs5DikOmEFA2sFSMsGYBELNYjHDjz22/R/L1MsZwFLTg+7fVJFT\n5+vXpW39l74jTW9ULCB0Ffk0FGkSNJPOQ6dJy75kPqH4e5c0m4RnSUiGDUMKMqt0\nAFbFMIqBDKFJhVxGHvoc4H+lic2WFXAMOa5+vo8ftbAEuXBK4REbeNIipoq+twz7\nLPVMlK3NVFDIl8oEGGnFOe/5X5EY/5CArtnsa3KdPQKBgQDZX21OAst23Jlqp8Dp\nMlBidSj2Ru6TsBlDrepLiqaNqjQA52BeEwkeF3D7pxYIBo+P4ZjmgdWmp3uv5ijp\n+px9WlZfeVvhn9eECUiMVCmo72qXYHDQCCOeRgKhV9Y7ldbRXkwUKPbrt7AqyWZC\n0gpCv5rqXMii5s3myzxmJaackwKBgQDWOXU4Bho0nq4rQmrPR6jiXVYH8SgfvfE3\ndfbsXrCe0kkCLvbpts2ig7x6VwABEcbmOoqd5PuplC+xkq3EOs8zLT8uOkAu4XYZ\nBzUZI2Gb0/o5pnU+0tVjbdjofuZDEl1AJhwez1m+gNhEkyS1lr7VDRvoCgpppj1/\nv6sciruH0wKBgAOb0fS5lyciAmoC3vEAJNV9nHB6PPu2sLSu7nTSmHFBohthu/fT\n2RLm0LlczMDVWwzIcgFhpmpd3W/OIl/ACVkLZuOu4Beez7UhclLiEs77KonY0Aak\nG/NEtkZ3btcOZcKUDi9HftHq+sG7FjeFxSXWiHvbjnkl28U5GoeXmGyBAoGAS2Z/\n3o8vTBQJ44oGBB0J0Vreu/7ii4GUVFv95CZT7iK/tbgICizgZfIONdVHWBkEs+Yp\nAfglqANTYiHpbWbxpOapFUFFc/rBUX/a7ZUpdup+aSownEMi/lMchICd1T+yeLCx\nNxruUIITHNfZlNyRIHXzu5FFJvhvLvasaGhgJycCgYB/eJtBMIRC/r72KZt0ESKU\nx0vt02SVBjkev5tc8m8A5CU9VHhAvHcGI6KiPj1inCZB3Icg+yvNV2lpL/6iyz1A\nMZjOVlxLT7hP7QX+KsOzPaAzGcb0R78mOhiV3jSw/Tw3iGRXJIDgyju0SnLHAugR\nI8SmRgMSkm1eRNFB6vO6xQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@mariokart-live.iam.gserviceaccount.com",
+  "client_id": "101574682864400943996",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40mariokart-live.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
