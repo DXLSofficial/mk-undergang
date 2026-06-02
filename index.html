@@ -309,7 +309,6 @@
                     <button class="btn-admin btn-remove" onclick="eliminarJugador()">✕ Eliminar</button>
                 </div>
 
-                <!-- NUEVA SECCIÓN DE SEGURIDAD Y CONFIGURACIÓN DE CONTRASENAS -->
                 <div class="admin-box" style="border: 1px dashed #444; padding: 15px; border-radius: 8px;">
                     <h3 style="color: #ff9f43;">🔐 Seguridad y Claves</h3>
                     <select id="tipo-clave-cambiar" class="admin-select">
@@ -333,7 +332,6 @@
     </div>
 
     <script>
-        // --- CONFIGURACIÓN DE CONFIGURACIÓN ORIGINAL / DEFAULT ---
         let CLAVE_CREW_SISTEMA = "mario-crew-2026";
         let CLAVE_SECRETA_ADMIN = "enerbelaskn25";
 
@@ -341,11 +339,17 @@
             if(e.key === 'Enter') verificarAccesoGlobal();
         }
 
+        function desvanecerBloqueo() {
+            document.getElementById('pantalla-bloqueo-global').style.display = 'none';
+            document.getElementById('contenido-principal').style.display = 'flex';
+        }
+
         function verificarAccesoGlobal() {
             const input = document.getElementById('clave-acceso-crew');
             if (input.value === CLAVE_CREW_SISTEMA) {
-                document.getElementById('pantalla-bloqueo-global').style.display = 'none';
-                document.getElementById('contenido-principal').style.display = 'flex';
+                // Guardar sesión de la Crew exitosa
+                localStorage.setItem('sesion_crew_valida', CLAVE_CREW_SISTEMA);
+                desvanecerBloqueo();
                 conectarFirebase();
             } else {
                 alert("Contraseña incorrecta. Acceso denegado.");
@@ -376,23 +380,40 @@
         const iconoCandado = document.getElementById('icono-candado');
         const textoCandado = document.getElementById('texto-candado');
 
-        // Escucha inicial para actualizar las claves guardadas antes del login si existen
         if (firebase.apps.length === 0) {
             firebase.initializeApp(firebaseConfig);
         }
         db = firebase.database();
         
-        // Sincronizar contraseñas en vivo desde Firebase
+        // Sincronizar contraseñas en vivo y verificar sesiones guardadas
         db.ref('configuracion/claves').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 if (data.crew) CLAVE_CREW_SISTEMA = data.crew;
                 if (data.admin) CLAVE_SECRETA_ADMIN = data.admin;
             }
+            
+            // Chequear si el usuario ya tenía sesión iniciada previamente
+            comprobarSesionesGuardadas();
         });
 
+        function comprobarSesionesGuardadas() {
+            const guardadaCrew = localStorage.getItem('sesion_crew_valida');
+            const guardadaAdmin = localStorage.getItem('sesion_admin_valida');
+
+            // Si la clave guardada coincide con la actual de la base de datos, entra directo
+            if (guardadaCrew === CLAVE_CREW_SISTEMA) {
+                desvanecerBloqueo();
+                conectarFirebase();
+
+                // Si también tenía sesión de admin iniciada, la reactiva directamente
+                if (guardadaAdmin === CLAVE_SECRETA_ADMIN && !modoAdminActivo) {
+                    activarInterfazAdmin();
+                }
+            }
+        }
+
         function conectarFirebase() {
-            // Escuchar cambios de jugadores en tiempo real
             db.ref('jugadores').on('value', (snapshot) => {
                 const datos = snapshot.val();
                 if (datos) {
@@ -408,22 +429,29 @@
             });
         }
 
+        function activarInterfazAdmin() {
+            modoAdminActivo = true;
+            document.documentElement.style.setProperty('--columnas-estructura', '0.5fr 1.5fr 0.9fr 0.9fr 1fr 1.2fr 1.2fr');
+            btnCandado.classList.add('activo');
+            iconoCandado.innerText = "🔓";
+            textoCandado.innerText = "Cerrar Admin";
+            panelGestionRoot.style.display = "block";
+            renderTabla();
+        }
+
         function conmutarModoAdmin() {
             if (!modoAdminActivo) {
                 const intento = prompt("Introduce la contraseña de administrador:");
                 if (intento === CLAVE_SECRETA_ADMIN) {
-                    modoAdminActivo = true;
-                    document.documentElement.style.setProperty('--columnas-estructura', '0.5fr 1.5fr 0.9fr 0.9fr 1fr 1.2fr 1.2fr');
-                    btnCandado.classList.add('activo');
-                    iconoCandado.innerText = "🔓";
-                    textoCandado.innerText = "Cerrar Admin";
-                    panelGestionRoot.style.display = "block";
-                    renderTabla(); 
+                    localStorage.setItem('sesion_admin_valida', CLAVE_SECRETA_ADMIN);
+                    activarInterfazAdmin();
                 } else if (intento !== null) {
                     alert("Contraseña incorrecta.");
                 }
             } else {
+                // Al cerrar voluntariamente, se destruye la sesión persistente de admin
                 modoAdminActivo = false;
+                localStorage.removeItem('sesion_admin_valida');
                 document.documentElement.style.setProperty('--columnas-estructura', '0.5fr 1.5fr 0.8fr 1fr 1.2fr');
                 btnCandado.classList.remove('activo');
                 iconoCandado.innerText = "🔒";
@@ -445,25 +473,28 @@
             }
 
             if (verificacionAdmin !== CLAVE_SECRETA_ADMIN) {
-                alert("Error: La 'Contraseña Admin Actual' ingresada es incorrecta. No tienes permisos para realizar este cambio.");
+                alert("Error: La 'Contraseña Admin Actual' ingresada es incorrecta.");
                 return;
             }
 
-            // Guardar en la nube
             const nodoDestino = tipo === 'crew' ? 'configuracion/claves/crew' : 'configuracion/claves/admin';
             
             db.ref(nodoDestino).set(nuevaClave)
                 .then(() => {
-                    alert(`¡Contraseña cambiada con éxito! La clave de ${tipo === 'crew' ? 'Entrada Crew' : 'Administrador'} ha sido actualizada en la nube.`);
+                    alert(`¡Cambio exitoso! Clave de ${tipo === 'crew' ? 'Entrada Crew' : 'Administrador'} actualizada.`);
+                    
+                    // Actualizar los localStorages locales para no perder la sesión propia tras el cambio
+                    if(tipo === 'crew') {
+                        localStorage.setItem('sesion_crew_valida', nuevaClave);
+                    } else {
+                        localStorage.setItem('sesion_admin_valida', nuevaClave);
+                    }
+
                     document.getElementById('nueva-clave-valor').value = "";
                     document.getElementById('confirmar-admin-actual').value = "";
-                    if(tipo === 'admin') {
-                        // Forzar cierre de admin para que pruebe la nueva clave
-                        conmutarModoAdmin();
-                    }
                 })
                 .catch((err) => {
-                    alert("Error al guardar la contraseña en Firebase. Revisa las reglas.");
+                    alert("Error al guardar en Firebase.");
                 });
         }
 
