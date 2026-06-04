@@ -1,0 +1,14 @@
+{
+  "name": "bot-marcador-mk",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.x.x",
+    "express": "^4.19.2",
+    "firebase-admin": "^12.x.x",
+    "puppeteer": "^22.x.x"
+  }
+}
