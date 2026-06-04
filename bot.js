@@ -74,8 +74,8 @@ function conectarFirebaseConDiscord() {
             });
             const page = await browser.newPage();
             
-            // 📸 LA CÁMARA AHORA ES MÁS ANCHA (1500px) PARA QUE QUEPA TODA LA TABLA
-            await page.setViewport({ width: 1500, height: 950, deviceScaleFactor: 2 });
+            // 📸 AUMENTAMOS LA CALIDAD DE LA LENTE (deviceScaleFactor: 3) EN LUGAR DE USAR ZOOM
+            await page.setViewport({ width: 1400, height: 950, deviceScaleFactor: 3 });
             await page.goto(URL_DE_LA_WEB, { waitUntil: 'networkidle2', timeout: 30000 });
 
             console.log("🔑 [2/5] Verificando acceso...");
@@ -95,15 +95,13 @@ function conectarFirebaseConDiscord() {
                 await new Promise(r => setTimeout(r, 4000));
             }
 
-            console.log("🛠️ [3/5] Aplicando zoom y cargando fuentes de Emojis...");
+            console.log("🛠️ [3/5] Limpiando interfaz y cargando Emojis...");
             await page.evaluate(() => {
                 const botonAdmin = document.getElementById('btn-candado');
                 if (botonAdmin) botonAdmin.remove();
 
                 const panelGestion = document.getElementById('panel-gestion-root');
                 if (panelGestion) panelGestion.remove();
-
-                document.body.style.zoom = "1.2";
 
                 // TRUCO PARA QUE LINUX LEA LOS EMOJIS CORRECTAMENTE
                 const estilos = document.createElement('style');
@@ -112,6 +110,11 @@ function conectarFirebaseConDiscord() {
                     body, div, span, td, th { 
                         font-family: "Segoe UI", Roboto, Arial, sans-serif, "Noto Color Emoji" !important; 
                     }
+                    /* Aseguramos que la tabla encaje perfecta para la foto */
+                    #tabla-marcador-contenedor {
+                        margin: 0 auto !important;
+                        max-width: 1050px !important;
+                    }
                 `;
                 document.head.appendChild(estilos);
             });
@@ -119,7 +122,8 @@ function conectarFirebaseConDiscord() {
             console.log("📸 [4/5] Capturando pantalla...");
             await new Promise(r => setTimeout(r, 4000)); // Damos 4 segundos para que descargue la fuente
             
-            const elementoTabla = await page.$('.container') || await page.$('#tabla-body');
+            // 🎯 TOMAMOS LA FOTO DIRECTAMENTE DEL CONTENEDOR PRINCIPAL
+            const elementoTabla = await page.$('#tabla-marcador-contenedor') || await page.$('.container');
             const imagenBuffer = elementoTabla 
                 ? await elementoTabla.screenshot({ type: 'png' }) 
                 : await page.screenshot({ type: 'png' });
