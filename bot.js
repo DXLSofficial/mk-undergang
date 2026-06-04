@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const admin = require('firebase-admin');
 const puppeteer = require('puppeteer');
+
 // --- TRUCO PARA ENGAÑAR A RENDER (SIMULA UNA WEB) ---
 const http = require('http');
 http.createServer((req, res) => {
@@ -8,6 +9,7 @@ http.createServer((req, res) => {
   res.end('Bot de Mario Kart corriendo activo!\n');
 }).listen(process.env.PORT || 3000);
 // ----------------------------------------------------
+
 // 1. CONFIGURACIÓN DE FIREBASE (Lee el archivo secreto que pondremos en Render)
 const serviceAccount = require("./firebase.json"); 
 admin.initializeApp({
@@ -92,7 +94,7 @@ function conectarFirebaseConDiscord() {
                 await new Promise(r => setTimeout(r, 4000));
             }
 
-            console.log("🛠️ [3/5] Aplicando zoom y limpiando interfaz...");
+            console.log("🛠️ [3/5] Aplicando zoom y cargando fuentes de Emojis...");
             await page.evaluate(() => {
                 const botonAdmin = document.getElementById('btn-candado');
                 if (botonAdmin) botonAdmin.remove();
@@ -101,10 +103,20 @@ function conectarFirebaseConDiscord() {
                 if (panelGestion) panelGestion.remove();
 
                 document.body.style.zoom = "1.2";
+
+                // TRUCO PARA QUE LINUX LEA LOS EMOJIS CORRECTAMENTE
+                const estilos = document.createElement('style');
+                estilos.innerHTML = `
+                    @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
+                    body, div, span, td, th { 
+                        font-family: "Segoe UI", Roboto, Arial, sans-serif, "Noto Color Emoji" !important; 
+                    }
+                `;
+                document.head.appendChild(estilos);
             });
 
             console.log("📸 [4/5] Capturando pantalla...");
-            await new Promise(r => setTimeout(r, 2000));
+            await new Promise(r => setTimeout(r, 4000)); // Damos 4 segundos para que descargue la fuente
             
             const elementoTabla = await page.$('.container') || await page.$('#tabla-body');
             const imagenBuffer = elementoTabla 
