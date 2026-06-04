@@ -1,7 +1,13 @@
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const admin = require('firebase-admin');
 const puppeteer = require('puppeteer');
-
+// --- TRUCO PARA ENGAÑAR A RENDER (SIMULA UNA WEB) ---
+const http = require('http');
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Bot de Mario Kart corriendo activo!\n');
+}).listen(process.env.PORT || 3000);
+// ----------------------------------------------------
 // 1. CONFIGURACIÓN DE FIREBASE (Lee el archivo secreto que pondremos en Render)
 const serviceAccount = require("./firebase.json"); 
 admin.initializeApp({
