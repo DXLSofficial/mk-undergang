@@ -5,6 +5,7 @@ const puppeteer = require('puppeteer');
 // --- TRUCO PARA ENGAÑAR A RENDER (SIMULA UNA WEB) ---
 const http = require('http');
 http.createServer((req, res) => {
+  console.log("⚡ Ping recibido: alguien visitó el bot para mantenerlo vivo."); // <--- ESTA LÍNEA
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   res.end('Bot de Mario Kart corriendo activo!\n');
 }).listen(process.env.PORT || 3000);
