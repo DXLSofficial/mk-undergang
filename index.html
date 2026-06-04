@@ -17,6 +17,31 @@
             align-items: center;
             padding: 20px;
             padding-bottom: 90px;
+            margin: 0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* CAPA EXCLUSIVA PARA EL BACKGROUND DIFUMINADO */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Inyección de tu imagen trasera */
+            background-image: url('MKWDX_bg.png'); 
+            background-repeat: no-repeat;
+            /* Posicionamiento exacto en el Centro-Derecha */
+            background-position: center right; 
+            /* Cubre el alto de la pantalla manteniendo su proporción original */
+            background-size: contain; 
+            /* Filtro de difuminado sutil para no estorbar la lectura del marcador */
+            filter: blur(6px) brightness(0.4); 
+            z-index: -1; /* Se envía al fondo del todo */
+            pointer-events: none;
         }
         
         /* PANTALLA DE BLOQUEO GLOBAL */
@@ -75,31 +100,46 @@
             align-items: center;
         }
 
-        h2 { 
-            color: #4af; 
-            text-shadow: 0 0 10px rgba(68, 170, 255, 0.4);
+        /* CONTENEDOR ESTILIZADO PARA TU NUEVO LOGO */
+        .contenedor-logo {
+            margin-top: 10px;
             margin-bottom: 5px;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 90%;
         }
-        .subtitulo {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            text-align: center;
+        .logo-mario-kart {
+            max-width: 480px; /* Tamaño máximo para que se vea genial y no colapse */
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0px 0px 15px rgba(68, 170, 255, 0.4)); /* Brillo sutil de fondo */
         }
 
+        .subtitulo {
+            color: #aaa; /* Un poco más claro para que resalte sobre el nuevo fondo */
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Fondo de la tabla levemente más denso para asegurar legibilidad */
         .container {
             width: 100%;
-            background-color: #1e1e24;
+            background-color: rgba(30, 30, 36, 0.92); 
             border-radius: 12px;
             padding: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.7);
             transition: all 0.3s ease;
             min-height: 60px;
             box-sizing: border-box;
+            backdrop-filter: blur(4px); /* Suaviza el fondo detrás de la tabla */
         }
 
-        /* ENCABEZADO INTERNO DE COPAS */
         .header-copa-interna {
             background: linear-gradient(90deg, rgba(255, 159, 67, 0.15), rgba(255, 107, 107, 0.15));
             border: 1px solid rgba(255, 159, 67, 0.3);
@@ -140,7 +180,7 @@
         }
 
         .fila-header {
-            color: #888;
+            color: #aaa;
             font-size: 0.82rem;
             text-transform: uppercase;
             font-weight: bold;
@@ -150,7 +190,7 @@
         .fila-header div:nth-child(2) { text-align: left; }
 
         .fila-jugador {
-            background-color: #2a2a35;
+            background-color: rgba(42, 42, 53, 0.9);
             border-radius: 8px;
             border: 2px solid transparent;
             text-align: center;
@@ -337,7 +377,12 @@
     </div>
 
     <div id="contenido-principal" style="display:none;">
-        <h2>|| Clasificación de Mario Kart Wii: Deluxe X ||</h2>
+        
+        <!-- REEMPLAZO: El h2 de texto fue cambiado por tu bloque de imagen oficial -->
+        <div class="contenedor-logo">
+            <img src="MKWDX_logo.png" alt="Logo Mario Kart Wii Deluxe X" class="logo-mario-kart">
+        </div>
+        
         <div class="subtitulo">Sincronizado en Tiempo Real</div>
 
         <div class="container" id="tabla-marcador-contenedor">
