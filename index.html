@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clasificación de Mario Kart Wii: Deluxe X</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -118,9 +121,6 @@
             position: relative;
         }
         
-        /* VALORES POR DEFECTO CORREGIDOS:
-           En modo usuario las columnas de administración miden exactamente 0px
-        */
         :root {
             --w-player: 1.8fr;
             --w-modif: 0fr;
@@ -159,7 +159,6 @@
         .fila-jugador div:nth-child(2) { text-align: left; }
         .fila-jugador:hover { background-color: #333344; }
 
-        /* CONTROL ESTRICTO DE VISIBILIDAD DE COLUMNAS */
         .col-admin {
             opacity: 0;
             visibility: hidden;
@@ -173,7 +172,6 @@
             overflow: hidden;
         }
 
-        /* Activación fluida de la animación */
         .admin-visible .col-admin {
             opacity: 1;
             visibility: visible;
@@ -345,7 +343,6 @@
         <div class="container" id="tabla-marcador-contenedor">
             <div id="marcador-copas-actuales" class="header-copa-interna">🏁 COPA / RONDA: --</div>
             
-            <!-- CAMBIO CRÍTICO: La cabecera se queda fija en el HTML con sus clases listas -->
             <div class="fila-header" id="tabla-header">
                 <div>Pos</div>
                 <div style="text-align: left;">Jugador</div>
@@ -385,7 +382,7 @@
                     <h3 style="color: #ff9f43;">🔐 Seguridad y Claves</h3>
                     <select id="tipo-clave-cambiar" class="admin-select">
                         <option value="crew">Contraseña de Entrada (Crew)</option>
-                        <option value="admin">Contraseña de Administrator</option>
+                        <option value="admin">Contraseña de Administrador</option>
                     </select>
                     <input type="password" id="nueva-clave-valor" class="admin-input" placeholder="Nueva Contraseña...">
                     <input type="password" id="confirmar-admin-actual" class="admin-input" placeholder="Contraseña Admin Actual...">
@@ -518,7 +515,6 @@
         function activarInterfazAdmin() {
             modoAdminActivo = true;
             
-            // Transición limpia de anchos numéricos del Grid
             document.documentElement.style.setProperty('--w-player', '1.3fr');
             document.documentElement.style.setProperty('--w-modif', '0.7fr');
             document.documentElement.style.setProperty('--w-add-tracks', '1fr');
@@ -544,7 +540,6 @@
             } else {
                 modoAdminActivo = false;
                 
-                // Las variables colapsan hacia atrás de forma ultra suave
                 document.documentElement.style.setProperty('--w-player', '1.8fr');
                 document.documentElement.style.setProperty('--w-modif', '0fr');
                 document.documentElement.style.setProperty('--w-add-tracks', '0fr');
