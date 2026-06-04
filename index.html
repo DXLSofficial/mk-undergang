@@ -23,24 +23,27 @@
             overflow-x: hidden;
         }
 
-        /* CAPA EXCLUSIVA PARA EL BACKGROUND DIFUMINADO */
+        /* CAPA EXCLUSIVA PARA EL BACKGROUND DIFUMINADO CON ZOOM Y DESPLAZAMIENTO */
         body::before {
             content: "";
-            position: fixed;
+            position: absolute; 
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* Inyección de tu imagen trasera */
             background-image: url('MKWDX_bg.png'); 
             background-repeat: no-repeat;
-            /* Posicionamiento exacto en el Centro-Derecha */
             background-position: center right; 
-            /* Cubre el alto de la pantalla manteniendo su proporción original */
-            background-size: contain; 
-            /* Filtro de difuminado sutil para no estorbar la lectura del marcador */
-            filter: blur(6px) brightness(0.4); 
-            z-index: -1; /* Se envía al fondo del todo */
+            
+            /* ZOOM AL FILO DE LA PISTA */
+            background-size: auto 150%; 
+            
+            /* EFECTO DE DESPLAZAMIENTO ORGÁNICO */
+            background-attachment: scroll; 
+            
+            /* Mantenemos el desenfoque y balanceamos la oscuridad para máxima lectura */
+            filter: blur(6px) brightness(0.35); 
+            z-index: -1; 
             pointer-events: none;
         }
         
@@ -100,7 +103,7 @@
             align-items: center;
         }
 
-        /* CONTENEDOR ESTILIZADO PARA TU NUEVO LOGO */
+        /* CONTENEDOR ESTILIZADO PARA TU LOGO */
         .contenedor-logo {
             margin-top: 10px;
             margin-bottom: 5px;
@@ -110,15 +113,15 @@
             max-width: 90%;
         }
         .logo-mario-kart {
-            max-width: 480px; /* Tamaño máximo para que se vea genial y no colapse */
+            max-width: 480px; 
             width: 100%;
             height: auto;
             object-fit: contain;
-            filter: drop-shadow(0px 0px 15px rgba(68, 170, 255, 0.4)); /* Brillo sutil de fondo */
+            filter: drop-shadow(0px 0px 15px rgba(68, 170, 255, 0.4)); 
         }
 
         .subtitulo {
-            color: #aaa; /* Un poco más claro para que resalte sobre el nuevo fondo */
+            color: #aaa; 
             font-size: 0.95rem;
             margin-bottom: 25px;
             text-align: center;
@@ -127,7 +130,6 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* Fondo de la tabla levemente más denso para asegurar legibilidad */
         .container {
             width: 100%;
             background-color: rgba(30, 30, 36, 0.92); 
@@ -137,7 +139,7 @@
             transition: all 0.3s ease;
             min-height: 60px;
             box-sizing: border-box;
-            backdrop-filter: blur(4px); /* Suaviza el fondo detrás de la tabla */
+            backdrop-filter: blur(4px); 
         }
 
         .header-copa-interna {
@@ -378,7 +380,6 @@
 
     <div id="contenido-principal" style="display:none;">
         
-        <!-- REEMPLAZO: El h2 de texto fue cambiado por tu bloque de imagen oficial -->
         <div class="contenedor-logo">
             <img src="MKWDX_logo.png" alt="Logo Mario Kart Wii Deluxe X" class="logo-mario-kart">
         </div>
@@ -730,10 +731,10 @@
             });
         }
 
-        function modificarCopas(firebaseKey, cantidad) {
+        function modificarCopas(firebaseKey, width) {
             const j = jugadores.find(x => x.firebaseKey === firebaseKey);
             if (j && db) {
-                j.copas = Math.max(0, j.copas + cantidad);
+                j.copas = Math.max(0, j.copas + width);
                 mandarANube(j);
             }
         }
