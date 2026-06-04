@@ -74,7 +74,8 @@ function conectarFirebaseConDiscord() {
             });
             const page = await browser.newPage();
             
-            await page.setViewport({ width: 1200, height: 950, deviceScaleFactor: 2 });
+            // 📸 LA CÁMARA AHORA ES MÁS ANCHA (1500px) PARA QUE QUEPA TODA LA TABLA
+            await page.setViewport({ width: 1500, height: 950, deviceScaleFactor: 2 });
             await page.goto(URL_DE_LA_WEB, { waitUntil: 'networkidle2', timeout: 30000 });
 
             console.log("🔑 [2/5] Verificando acceso...");
