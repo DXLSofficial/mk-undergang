@@ -118,40 +118,67 @@
             position: relative;
         }
         
-        /* CORRECCIÓN CRÍTICA: Definimos por defecto la estructura de 6 columnas del modo usuario */
+        /* VALORES POR DEFECTO CORREGIDOS:
+           En modo usuario las columnas de administración miden exactamente 0px
+        */
         :root {
-            --columnas-estructura: 0.5fr 1.4fr 0.8fr 0.9fr 1fr 1.2fr;
+            --w-player: 1.8fr;
+            --w-modif: 0fr;
+            --w-add-tracks: 0fr;
+            --w-add-pts: 0fr;
+            --gap-admin: 0px;
+        }
+
+        .fila-header, .fila-jugador {
+            display: grid;
+            grid-template-columns: 0.5fr var(--w-player) 0.8fr var(--w-modif) 0.8fr 0.8fr 1.1fr var(--w-add-tracks) var(--w-add-pts);
+            align-items: center;
+            padding: 12px 15px;
+            gap: var(--gap-admin);
+            transition: grid-template-columns 0.45s cubic-bezier(0.4, 0, 0.2, 1), gap 0.45s ease;
+            box-sizing: border-box;
         }
 
         .fila-header {
-            display: grid;
-            grid-template-columns: var(--columnas-estructura);
-            padding: 12px 15px;
             color: #888;
             font-size: 0.82rem;
             text-transform: uppercase;
             font-weight: bold;
             border-bottom: 2px solid #2a2a35;
             text-align: center;
-            transition: grid-template-columns 0.3s ease;
-            gap: 5px;
         }
         .fila-header div:nth-child(2) { text-align: left; }
 
         .fila-jugador {
-            display: grid;
-            grid-template-columns: var(--columnas-estructura);
-            align-items: center;
-            padding: 12px 15px;
             background-color: #2a2a35;
             border-radius: 8px;
             border: 2px solid transparent;
             text-align: center;
-            transition: background-color 0.3s, border-color 0.3s, grid-template-columns 0.3s ease;
-            gap: 5px;
+            transition: background-color 0.3s, border-color 0.3s, grid-template-columns 0.45s cubic-bezier(0.4, 0, 0.2, 1), gap 0.45s ease;
         }
         .fila-jugador div:nth-child(2) { text-align: left; }
         .fila-jugador:hover { background-color: #333344; }
+
+        /* CONTROL ESTRICTO DE VISIBILIDAD DE COLUMNAS */
+        .col-admin {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(20px);
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
+            white-space: nowrap;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Activación fluida de la animación */
+        .admin-visible .col-admin {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
 
         .puesto-1 { border-color: #ffd700; background-color: rgba(255, 215, 0, 0.05); }
         .puesto-2 { border-color: #c0c0c0; background-color: rgba(192, 192, 192, 0.05); }
@@ -207,7 +234,7 @@
         
         .input-sumar-carrera {
             width: 100%;
-            max-width: 72px;
+            max-width: 80px;
             background-color: #141419;
             border: 1px solid #555;
             color: #4af;
@@ -315,9 +342,22 @@
         <h2>|| Clasificación de Mario Kart Wii: Deluxe X ||</h2>
         <div class="subtitulo">Sincronizado en Tiempo Real</div>
 
-        <div class="container">
+        <div class="container" id="tabla-marcador-contenedor">
             <div id="marcador-copas-actuales" class="header-copa-interna">🏁 COPA / RONDA: --</div>
-            <div class="fila-header" id="tabla-header"></div>
+            
+            <!-- CAMBIO CRÍTICO: La cabecera se queda fija en el HTML con sus clases listas -->
+            <div class="fila-header" id="tabla-header">
+                <div>Pos</div>
+                <div style="text-align: left;">Jugador</div>
+                <div>🏆 Copas</div>
+                <div class="col-admin">Modif.</div>
+                <div>🏁 Pistas</div>
+                <div>📈 Avg</div>
+                <div>📊 Total Pts</div>
+                <div class="col-admin">➕ Pistas</div>
+                <div class="col-admin">➕ Puntos</div>
+            </div>
+            
             <div id="tabla-body" class="tabla-animada"></div>
         </div>
 
@@ -345,7 +385,7 @@
                     <h3 style="color: #ff9f43;">🔐 Seguridad y Claves</h3>
                     <select id="tipo-clave-cambiar" class="admin-select">
                         <option value="crew">Contraseña de Entrada (Crew)</option>
-                        <option value="admin">Contraseña de Administrador</option>
+                        <option value="admin">Contraseña de Administrator</option>
                     </select>
                     <input type="password" id="nueva-clave-valor" class="admin-input" placeholder="Nueva Contraseña...">
                     <input type="password" id="confirmar-admin-actual" class="admin-input" placeholder="Contraseña Admin Actual...">
@@ -414,7 +454,6 @@
         let jugadores = [];
         let modoAdminActivo = false;
 
-        const tablaHeader = document.getElementById('tabla-header');
         const tablaBody = document.getElementById('tabla-body');
         const selectEliminar = document.getElementById('select-eliminar');
         const panelGestionRoot = document.getElementById('panel-gestion-root');
@@ -422,6 +461,7 @@
         const iconoCandado = document.getElementById('icono-candado');
         const textoCandado = document.getElementById('texto-candado');
         const marcadorCopas = document.getElementById('marcador-copas-actuales');
+        const contenedorMarcador = document.getElementById('tabla-marcador-contenedor');
 
         function inicializarTodo() {
             if (firebase.apps.length === 0) {
@@ -477,13 +517,20 @@
 
         function activarInterfazAdmin() {
             modoAdminActivo = true;
-            // 9 columnas proporcionales para el Modo Admin
-            document.documentElement.style.setProperty('--columnas-estructura', '0.4fr 1.2fr 0.7fr 0.8fr 0.6fr 0.6fr 0.9fr 1fr 1fr');
+            
+            // Transición limpia de anchos numéricos del Grid
+            document.documentElement.style.setProperty('--w-player', '1.3fr');
+            document.documentElement.style.setProperty('--w-modif', '0.7fr');
+            document.documentElement.style.setProperty('--w-add-tracks', '1fr');
+            document.documentElement.style.setProperty('--w-add-pts', '1fr');
+            document.documentElement.style.setProperty('--gap-admin', '6px');
+            
+            contenedorMarcador.classList.add('admin-visible');
+            
             btnCandado.classList.add('activo');
             iconoCandado.innerText = "🔓";
             textoCandado.innerText = "Cerrar Admin";
             panelGestionRoot.style.display = "block";
-            renderTabla();
         }
 
         function conmutarModoAdmin() {
@@ -496,14 +543,21 @@
                 }
             } else {
                 modoAdminActivo = false;
-                // CORRECCIÓN: Volvemos exactamente a las 6 columnas balanceadas para modo usuario
-                document.documentElement.style.setProperty('--columnas-estructura', '0.5fr 1.4fr 0.8fr 0.9fr 1fr 1.2fr');
+                
+                // Las variables colapsan hacia atrás de forma ultra suave
+                document.documentElement.style.setProperty('--w-player', '1.8fr');
+                document.documentElement.style.setProperty('--w-modif', '0fr');
+                document.documentElement.style.setProperty('--w-add-tracks', '0fr');
+                document.documentElement.style.setProperty('--w-add-pts', '0fr');
+                document.documentElement.style.setProperty('--gap-admin', '0px');
+                
+                contenedorMarcador.classList.remove('admin-visible');
+                
                 btnCandado.classList.remove('activo');
                 iconoCandado.innerText = "🔒";
                 textoCandado.innerText = "Modo Admin";
                 panelGestionRoot.style.display = "none";
                 panelGestionRoot.removeAttribute("open");
-                renderTabla();
             }
         }
 
@@ -571,17 +625,6 @@
                 return b.carreraTotal - a.carreraTotal;
             });
 
-            if (modoAdminActivo) {
-                tablaHeader.innerHTML = `
-                    <div>Pos</div><div style="text-align: left;">Jugador</div><div>🏆 Copas</div><div>Modif.</div><div>🏁 Pistas</div><div>📈 Avg</div><div>📊 Total Pts</div><div>➕ Pistas</div><div>➕ Puntos</div>
-                `;
-            } else {
-                // Cabecera fija de 6 columnas alineada exactamente con el :root por defecto
-                tablaHeader.innerHTML = `
-                    <div>Pos</div><div style="text-align: left;">Jugador</div><div>🏆 Copas</div><div>🏁 Pistas</div><div>📈 Avg</div><div>📊 Total Pts</div>
-                `;
-            }
-
             tablaBody.innerHTML = "";
             const totalJugadores = jugadores.length;
 
@@ -603,39 +646,30 @@
                 fila.id = `jugador-${jugador.id}`;
                 fila.className = `fila-jugador ${clasePuesto}`;
                 
-                if (modoAdminActivo) {
-                    fila.innerHTML = `
-                        <div class="posicion">#${indice + 1}</div>
-                        <div class="nombre" title="${jugador.nombre}">${jugador.nombre}</div>
-                        <div class="puntos-copas">${jugador.copas}</div>
-                        <div class="control-valores">
-                            <button class="btn-accion btn-mas" onclick="modificarCopas('${jugador.firebaseKey}', 1)">+</button>
-                            <button class="btn-accion btn-menos" onclick="modificarCopas('${jugador.firebaseKey}', -1)">-</button>
-                        </div>
-                        <div class="total-carreras-num">${jugador.carreras}</div>
-                        <div class="pts-promedio">${promedio}</div>
-                        <div class="total-carrera">${jugador.carreraTotal} pts</div>
-                        
-                        <div>
-                            <input type="number" id="race-${jugador.id}" class="input-sumar-carrera race-input" placeholder="+ tracks"
-                                   onkeydown="chequearEnterRace(event, ${jugador.id})" onblur="procesarSumaCarreras('${jugador.firebaseKey}', ${jugador.id})">
-                        </div>
-                        
-                        <div>
-                            <input type="number" id="add-${jugador.id}" class="input-sumar-carrera" placeholder="+ pts"
-                                   onkeydown="chequearEnter(event, ${jugador.id})" onblur="procesarSuma('${jugador.firebaseKey}', ${jugador.id})">
-                        </div>
-                    `;
-                } else {
-                    fila.innerHTML = `
-                        <div class="posicion">#${indice + 1}</div>
-                        <div class="nombre">${jugador.nombre}</div>
-                        <div class="puntos-copas">${jugador.copas}</div>
-                        <div class="total-carreras-num">${jugador.carreras}</div>
-                        <div class="pts-promedio">${promedio}</div>
-                        <div class="total-carrera">${jugador.carreraTotal} pts</div>
-                    `;
-                }
+                fila.innerHTML = `
+                    <div class="posicion">#${indice + 1}</div>
+                    <div class="nombre" title="${jugador.nombre}">${jugador.nombre}</div>
+                    <div class="puntos-copas">${jugador.copas}</div>
+                    
+                    <div class="control-valores col-admin">
+                        <button class="btn-accion btn-mas" onclick="modificarCopas('${jugador.firebaseKey}', 1)">+</button>
+                        <button class="btn-accion btn-menos" onclick="modificarCopas('${jugador.firebaseKey}', -1)">-</button>
+                    </div>
+                    
+                    <div class="total-carreras-num">${jugador.carreras}</div>
+                    <div class="pts-promedio">${promedio}</div>
+                    <div class="total-carrera">${jugador.carreraTotal} pts</div>
+                    
+                    <div class="col-admin">
+                        <input type="number" id="race-${jugador.id}" class="input-sumar-carrera race-input" placeholder="+ tracks"
+                               onkeydown="chequearEnterRace(event, ${jugador.id})" onblur="procesarSumaCarreras('${jugador.firebaseKey}', ${jugador.id})">
+                    </div>
+                    
+                    <div class="col-admin">
+                        <input type="number" id="add-${jugador.id}" class="input-sumar-carrera" placeholder="+ pts"
+                               onkeydown="chequearEnter(event, ${jugador.id})" onblur="procesarSuma('${jugador.firebaseKey}', ${jugador.id})">
+                    </div>
+                `;
                 tablaBody.appendChild(fila);
             });
 
