@@ -23,30 +23,34 @@
             overflow-x: hidden;
         }
 
-        /* EFECTO PARALAJE CORREGIDO CON DESPLAZAMIENTO DE 30PX A LA IZQUIERDA */
+        /* EFECTO DE MOVIMIENTO MÁS LENTO (PARALAJE REAL) Y CORRECCIÓN DE ESPACIOS */
         body::before {
             content: "";
-            position: fixed; /* Se mantiene estático en pantalla mientras la tabla sube */
+            position: absolute; 
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            /* Forzamos a que el fondo sea un poco más alto que la página para que tenga margen de desplazamiento */
+            height: 120%; 
             background-image: url('MKWDX_bg.png'); 
             background-repeat: no-repeat;
             
-            /* POSICIONAMIENTO: Centro vertical, y a la derecha restando exactamente 30px */
-            background-position: calc(100% - 30px) center; 
+            /* Posicionamos a la derecha pero con un margen interno (padding) simulado mediante porcentajes */
+            background-position: 98% top; 
             
-            /* ZOOM MASIVO */
-            background-size: auto 150%; 
+            /* Mantenemos el súper zoom en la pista */
+            background-size: auto 140%; 
             
-            /* FIJADO DE PARALAJE: Genera el efecto visual de que se desliza mucho más lento */
-            background-attachment: fixed; 
+            /* Volvemos a activar el scroll dinámico */
+            background-attachment: scroll; 
             
-            /* Desenfoque y oscuridad óptimos */
+            /* Filtros visuales para no entorpecer la lectura */
             filter: blur(6px) brightness(0.35); 
             z-index: -1; 
             pointer-events: none;
+            
+            /* Suaviza el renderizado del movimiento en algunos navegadores */
+            transform: translate3d(0, 0, 0); 
         }
         
         /* PANTALLA DE BLOQUEO GLOBAL */
