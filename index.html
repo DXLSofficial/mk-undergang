@@ -91,7 +91,7 @@
 						#contenido-principal {
 						display: none;
 						width: 100%;
-						max-width: 1100px;
+						max-width: 1150px; /* Un poco más de espacio para la nueva columna */
 						flex-direction: column;
 						align-items: center;
 						}
@@ -170,9 +170,11 @@
 						position: relative;
 						}
 
+						/* NUEVO ESPACIO EN LA CUADRÍCULA PARA PERFECTOS */
 						:root {
-						--w-player: 1.8fr;
+						--w-player: 1.6fr;
 						--w-modif: 0fr;
+						--w-modif-perf: 0fr;
 						--w-add-tracks: 0fr;
 						--w-add-pts: 0fr;
 						--gap-admin: 0px;
@@ -180,7 +182,7 @@
 
 						.fila-header, .fila-jugador {
 						display: grid;
-						grid-template-columns: 0.5fr var(--w-player) 0.8fr var(--w-modif) 0.8fr 0.8fr 1.1fr var(--w-add-tracks) var(--w-add-pts);
+						grid-template-columns: 0.5fr var(--w-player) 0.7fr var(--w-modif) 0.7fr var(--w-modif-perf) 0.7fr 0.9fr 1fr var(--w-add-tracks) var(--w-add-pts);
 						align-items: center;
 						padding: 12px 15px;
 						gap: var(--gap-admin);
@@ -240,6 +242,7 @@
 
 						.nombre { font-weight: 500; font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 						.puntos-copas { font-weight: bold; font-size: 1.15rem; color: #fff; }
+
 						.total-carreras-num { font-weight: bold; font-size: 1.1rem; color: #ff9f43; }
 						.pts-promedio { font-weight: bold; font-size: 1.05rem; color: #1dd1a1; text-shadow: 0 0 5px rgba(29, 209, 161, 0.2); }
 
@@ -384,8 +387,10 @@
 					<div style="text-align: left;">Jugador</div>
 					<div>🏆 Copas</div>
 					<div class="col-admin">Modif.</div>
+					<div>⭐ Perfect</div>
+					<div class="col-admin">Modif.</div>
 					<div>🏁 Pistas</div>
-					<div>📈 Avg Pts per race</div>
+					<div>📈 Avg Pts</div>
 					<div>📊 Total Pts</div>
 					<div class="col-admin">➕ Pistas</div>
 					<div class="col-admin">➕ Puntos</div>
@@ -433,7 +438,7 @@
 						<input type="number" id="input-empates-sistema" class="admin-input" placeholder="Ej: 2" onblur="guardarEmpatesSistema()">
                 </div>
 
-					<!-- NUEVA CAJA PARA AÑADIR CANCIONES AL CATÁLOGO -->
+					<!-- CAJA PARA AÑADIR CANCIONES AL CATÁLOGO -->
 					<div class="admin-box" style="border: 1px dashed #9b59b6; padding: 15px; border-radius: 8px;">
 						<h3 style="color: #c39bd3;">🎵 Añadir Canción</h3>
 						<input type="text" id="nueva-cancion-titulo" class="admin-input" placeholder="Título (Ej: N64 Rainbow Road)">
@@ -616,18 +621,15 @@
 			if (data) {
 			playlist = Object.keys(data).map(key => data[key]);
 			} else {
-			// Si no hay lista en Firebase, carga el catálogo inicial
 			playlist = [
 			{ url: 'musicmenu/menu_0.mp3', title: 'Mii Maker (Wii U)', creator: 'Nintendo' },
 			{ url: 'musicmenu/menu_1.mp3', title: 'Electrodome', creator: 'Nintendo' },
 			{ url: 'musicmenu/menu_2.mp3', title: 'Stickerbrush Symphony', creator: 'David Wise' },
 			{ url: 'musicmenu/menu_3.mp3', title: 'Cheese Land', creator: 'Nintendo' }
 			];
-			// Lo guarda en la nube para el futuro
 			db.ref('configuracion/playlist').set(playlist);
 			}
 
-			// Carga la primera pista si no estaba sonando nada
 			if(musica.src === "" || musica.src === window.location.href) {
 			cargarCancion(0);
 			}
@@ -725,11 +727,12 @@
 			function activarInterfazAdmin() {
 			modoAdminActivo = true;
 
-			document.documentElement.style.setProperty('--w-player', '1.3fr');
-			document.documentElement.style.setProperty('--w-modif', '0.7fr');
-			document.documentElement.style.setProperty('--w-add-tracks', '1fr');
-			document.documentElement.style.setProperty('--w-add-pts', '1fr');
-			document.documentElement.style.setProperty('--gap-admin', '6px');
+			document.documentElement.style.setProperty('--w-player', '1.2fr');
+			document.documentElement.style.setProperty('--w-modif', '0.6fr');
+			document.documentElement.style.setProperty('--w-modif-perf', '0.6fr');
+			document.documentElement.style.setProperty('--w-add-tracks', '0.8fr');
+			document.documentElement.style.setProperty('--w-add-pts', '0.8fr');
+			document.documentElement.style.setProperty('--gap-admin', '4px');
 
 			contenedorMarcador.classList.add('admin-visible');
 
@@ -749,8 +752,9 @@
 			} else {
 			modoAdminActivo = false;
 
-			document.documentElement.style.setProperty('--w-player', '1.8fr');
+			document.documentElement.style.setProperty('--w-player', '1.6fr');
 			document.documentElement.style.setProperty('--w-modif', '0fr');
+			document.documentElement.style.setProperty('--w-modif-perf', '0fr');
 			document.documentElement.style.setProperty('--w-add-tracks', '0fr');
 			document.documentElement.style.setProperty('--w-add-pts', '0fr');
 			document.documentElement.style.setProperty('--gap-admin', '0px');
@@ -798,6 +802,7 @@
 			id: jugador.id,
 			nombre: jugador.nombre,
 			copas: jugador.copas,
+			perfectos: jugador.perfectos || 0,
 			carreras: jugador.carreras,
 			carreraTotal: jugador.carreraTotal
 			});
@@ -823,8 +828,10 @@
 			if (el) posicionesViejas[j.id] = el.getBoundingClientRect().top;
 			});
 
+			// LOGICA DE DESEMPATE ACTUALIZADA (Copas > Perfectos > Total)
 			jugadores.sort((a, b) => {
 			if (b.copas !== a.copas) return b.copas - a.copas;
+			if ((b.perfectos || 0) !== (a.perfectos || 0)) return (b.perfectos || 0) - (a.perfectos || 0);
 			return b.carreraTotal - a.carreraTotal;
 			});
 
@@ -856,6 +863,13 @@
 			<div class="control-valores col-admin">
 				<button class="btn-accion btn-mas" onclick="modificarCopas('${jugador.firebaseKey}', 1)">+</button>
 				<button class="btn-accion btn-menos" onclick="modificarCopas('${jugador.firebaseKey}', -1)">-</button>
+			</div>
+
+			<div class="puntos-copas" style="color: #f1c40f; text-shadow: 0 0 5px rgba(241,196,15,0.4);">${jugador.perfectos || 0}</div>
+
+			<div class="control-valores col-admin">
+				<button class="btn-accion btn-mas" onclick="modificarPerfectos('${jugador.firebaseKey}', 1)">+</button>
+				<button class="btn-accion btn-menos" onclick="modificarPerfectos('${jugador.firebaseKey}', -1)">-</button>
 			</div>
 
 			<div class="total-carreras-num">${jugador.carreras}</div>
@@ -896,6 +910,14 @@
 			const j = jugadores.find(x => x.firebaseKey === firebaseKey);
 			if (j && db) {
 			j.copas = Math.max(0, j.copas + width);
+			mandarANube(j);
+			}
+			}
+
+			function modificarPerfectos(firebaseKey, width) {
+			const j = jugadores.find(x => x.firebaseKey === firebaseKey);
+			if (j && db) {
+			j.perfectos = Math.max(0, (j.perfectos || 0) + width);
 			mandarANube(j);
 			}
 			}
@@ -947,6 +969,7 @@
 			id: Date.now(),
 			nombre: nombre,
 			copas: 0,
+			perfectos: 0,
 			carreras: 0,
 			carreraTotal: 0
 			};
@@ -969,6 +992,7 @@
 			if (confirm("¿Restablecer marcadores de todos a cero?")) {
 			jugadores.forEach(j => {
 			j.copas = 0;
+			j.perfectos = 0;
 			j.carreras = 0;
 			j.carreraTotal = 0;
 			mandarANube(j);
