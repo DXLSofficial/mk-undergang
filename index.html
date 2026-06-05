@@ -1,1086 +1,1075 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clasificación de Mario Kart Wii: Deluxe X</title>
-    
-    <link rel="icon" type="image/png" href="favicon.png?v=1">
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Clasificación de Mario Kart Wii: Deluxe X</title>
 
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #141419;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            padding-bottom: 90px;
-            margin: 0;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
+				<link rel="icon" type="image/png" href="favicon.png?v=1">
 
-        /* EFECTO DE MOVIMIENTO CORREGIDO (FONDO FIJO PARA EVITAR BUG DE SCROLL) */
-        body::before {
-            content: "";
-            position: fixed; 
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh; 
-            background-image: url('MKWDX_bg.png'); 
-            background-repeat: no-repeat;
-            background-position: 98% top; 
-            background-size: auto 140%; 
-            filter: blur(6px) brightness(0.35); 
-            z-index: -1; 
-            pointer-events: none;
-            transform: translate3d(0, 0, 0); 
-        }
-        
-        /* PANTALLA DE BLOQUEO GLOBAL */
-        #pantalla-bloqueo-global {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #0d0d11;
-            z-index: 100000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-        .caja-bloqueo {
-            background-color: #1e1e24;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-            text-align: center;
-            border: 2px solid #333;
-            max-width: 90%;
-            width: 320px;
-        }
-        .caja-bloqueo h3 { margin-top: 0; color: #ff4757; }
-        .input-bloqueo {
-            width: 90%;
-            background-color: #141419;
-            border: 1px solid #555;
-            color: #fff;
-            padding: 10px;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-        .btn-bloqueo {
-            background-color: #4af;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-        }
-        .btn-bloqueo:hover { background-color: #29f; }
+					<style>
+						body {
+						font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+						background-color: #141419;
+						color: #fff;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						padding: 20px;
+						padding-bottom: 90px;
+						margin: 0;
+						min-height: 100vh;
+						position: relative;
+						overflow-x: hidden;
+						}
 
-        /* INTERFAZ PRINCIPAL */
-        #contenido-principal {
-            display: none; 
-            width: 100%;
-            max-width: 1150px;
-            flex-direction: column;
-            align-items: center;
-        }
+						/* EFECTO DE MOVIMIENTO CORREGIDO */
+						body::before {
+						content: "";
+						position: fixed;
+						top: 0;
+						left: 0;
+						width: 100vw;
+						height: 100vh;
+						background-image: url('MKWDX_bg.png');
+						background-repeat: no-repeat;
+						background-position: 98% top;
+						background-size: auto 140%;
+						filter: blur(6px) brightness(0.35);
+						z-index: -1;
+						pointer-events: none;
+						transform: translate3d(0, 0, 0);
+						}
 
-        .contenedor-logo {
-            margin-top: 10px;
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            max-width: 90%;
-        }
-        .logo-mario-kart {
-            max-width: 480px; 
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            filter: drop-shadow(0px 0px 15px rgba(68, 170, 255, 0.4)); 
-        }
+						/* PANTALLA DE BLOQUEO GLOBAL */
+						#pantalla-bloqueo-global {
+						position: fixed;
+						top: 0; left: 0; width: 100%; height: 100%;
+						background-color: #0d0d11;
+						z-index: 100000;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+						gap: 15px;
+						}
+						.caja-bloqueo {
+						background-color: #1e1e24;
+						padding: 30px;
+						border-radius: 12px;
+						box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+						text-align: center;
+						border: 2px solid #333;
+						max-width: 90%;
+						width: 320px;
+						}
+						.caja-bloqueo h3 { margin-top: 0; color: #ff4757; }
+						.input-bloqueo {
+						width: 90%;
+						background-color: #141419;
+						border: 1px solid #555;
+						color: #fff;
+						padding: 10px;
+						border-radius: 6px;
+						text-align: center;
+						font-size: 1.1rem;
+						margin-bottom: 20px;
+						}
+						.btn-bloqueo {
+						background-color: #4af;
+						color: #fff;
+						border: none;
+						padding: 10px 20px;
+						border-radius: 6px;
+						font-weight: bold;
+						cursor: pointer;
+						width: 100%;
+						}
+						.btn-bloqueo:hover { background-color: #29f; }
 
-        .subtitulo {
-            color: #aaa; 
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
+						/* INTERFAZ PRINCIPAL */
+						#contenido-principal {
+						display: none;
+						width: 100%;
+						max-width: 1150px;
+						flex-direction: column;
+						align-items: center;
+						}
 
-        .container {
-            width: 100%;
-            background-color: rgba(30, 30, 36, 0.92); 
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.7);
-            transition: all 0.3s ease;
-            min-height: 60px;
-            box-sizing: border-box;
-            backdrop-filter: blur(4px); 
-        }
+						.contenedor-logo {
+						margin-top: 10px;
+						margin-bottom: 5px;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						max-width: 90%;
+						}
+						.logo-mario-kart {
+						max-width: 480px;
+						width: 100%;
+						height: auto;
+						object-fit: contain;
+						filter: drop-shadow(0px 0px 15px rgba(68, 170, 255, 0.4));
+						}
 
-        .header-copa-interna {
-            background: linear-gradient(90deg, rgba(255, 159, 67, 0.15), rgba(255, 107, 107, 0.15));
-            border: 1px solid rgba(255, 159, 67, 0.3);
-            border-radius: 8px;
-            padding: 10px 15px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #ff9f43;
-            text-shadow: 0 0 8px rgba(255, 159, 67, 0.4);
-            letter-spacing: 1px;
-            position: relative;
-        }
-        
-        .caja-empates {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.9rem;
-            color: #ff6b6b;
-            text-shadow: none;
-            background: rgba(0,0,0,0.4);
-            padding: 4px 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(255,107,107,0.3);
-        }
+						.subtitulo {
+						color: #aaa;
+						font-size: 0.95rem;
+						margin-bottom: 25px;
+						text-align: center;
+						font-weight: bold;
+						letter-spacing: 0.5px;
+						text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+						}
 
-        .tabla-animada {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            position: relative;
-        }
-        
-        :root {
-            --w-player: 2.2fr;
-            --w-modif: 0fr;
-            --w-modif-perf: 0fr;
-            --w-add-tracks: 0fr;
-            --w-add-pts: 0fr;
-            --gap-admin: 0px;
-        }
+						.container {
+						width: 100%;
+						background-color: rgba(30, 30, 36, 0.92);
+						border-radius: 12px;
+						padding: 15px;
+						box-shadow: 0 12px 35px rgba(0,0,0,0.7);
+						transition: all 0.3s ease;
+						min-height: 60px;
+						box-sizing: border-box;
+						backdrop-filter: blur(4px);
+						}
 
-        .fila-header, .fila-jugador {
-            display: grid;
-            grid-template-columns: 0.5fr var(--w-player) 0.7fr var(--w-modif) 0.7fr var(--w-modif-perf) 0.7fr 0.9fr 1fr var(--w-add-tracks) var(--w-add-pts);
-            align-items: center;
-            padding: 12px 15px;
-            gap: var(--gap-admin);
-            transition: grid-template-columns 0.45s cubic-bezier(0.4, 0, 0.2, 1), gap 0.45s ease;
-            box-sizing: border-box;
-        }
+						.header-copa-interna {
+						background: linear-gradient(90deg, rgba(255, 159, 67, 0.15), rgba(255, 107, 107, 0.15));
+						border: 1px solid rgba(255, 159, 67, 0.3);
+						border-radius: 8px;
+						padding: 10px 15px;
+						margin-bottom: 15px;
+						text-align: center;
+						font-weight: bold;
+						font-size: 1.1rem;
+						color: #ff9f43;
+						text-shadow: 0 0 8px rgba(255, 159, 67, 0.4);
+						letter-spacing: 1px;
+						position: relative;
+						}
 
-        .fila-header {
-            color: #aaa;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            font-weight: bold;
-            border-bottom: 2px solid #2a2a35;
-            text-align: center;
-        }
-        .fila-header div:nth-child(2) { text-align: left; padding-left: 10px; }
+						.caja-empates {
+						position: absolute;
+						right: 15px;
+						top: 50%;
+						transform: translateY(-50%);
+						font-size: 0.9rem;
+						color: #ff6b6b;
+						text-shadow: none;
+						background: rgba(0,0,0,0.4);
+						padding: 4px 10px;
+						border-radius: 6px;
+						border: 1px solid rgba(255,107,107,0.3);
+						}
 
-        .fila-jugador {
-            background-color: rgba(42, 42, 53, 0.9);
-            border-radius: 8px;
-            border: 2px solid transparent;
-            text-align: center;
-            transition: background-color 0.3s, border-color 0.3s, grid-template-columns 0.45s cubic-bezier(0.4, 0, 0.2, 1), gap 0.45s ease;
-            position: relative; /* Clave para que la imagen de fondo no se escape */
-            overflow: hidden;
-            z-index: 1;
-        }
-        .fila-jugador div:nth-child(2) { text-align: left; }
-        .fila-jugador:hover { background-color: #333344; }
+						.tabla-animada {
+						display: flex;
+						flex-direction: column;
+						gap: 10px;
+						position: relative;
+						}
 
-        /* ESTILOS DEL WALLPAPER DE FONDO INCLINADO */
-        .avatar-bg-container {
-            position: absolute;
-            top: 0;
-            left: -5%; /* Escondemos el borde izquierdo */
-            width: 35%; /* La foto ocupará el 35% del ancho de la fila (Hasta Copas) */
-            height: 100%;
-            transform: skewX(-20deg);
-            overflow: hidden;
-            border-right: 4px solid;
-            z-index: 0;
-            background-color: #1a1a24;
-        }
+						:root {
+						--w-player: 2.2fr;
+						--w-modif: 0fr;
+						--w-modif-perf: 0fr;
+						--w-add-tracks: 0fr;
+						--w-add-pts: 0fr;
+						--gap-admin: 0px;
+						}
 
-        /* Color del borde inclinado de fondo según el puesto */
-        .puesto-1 .avatar-bg-container { border-color: #ffd700; box-shadow: 8px 0 20px rgba(255,215,0,0.3); }
-        .puesto-2 .avatar-bg-container { border-color: #c0c0c0; box-shadow: 8px 0 20px rgba(192,192,192,0.3); }
-        .puesto-3 .avatar-bg-container { border-color: #cd7f32; box-shadow: 8px 0 20px rgba(205,127,50,0.3); }
-        .puesto-normal .avatar-bg-container { border-color: #a855f7; box-shadow: 8px 0 20px rgba(168,85,247,0.15); }
+						.fila-header, .fila-jugador {
+						display: grid;
+						grid-template-columns: 0.5fr var(--w-player) 0.7fr var(--w-modif) 0.7fr var(--w-modif-perf) 0.7fr 0.9fr 1fr var(--w-add-tracks) var(--w-add-pts);
+						align-items: center;
+						padding: 12px 15px;
+						gap: var(--gap-admin);
+						transition: grid-template-columns 0.45s cubic-bezier(0.4, 0, 0.2, 1), gap 0.45s ease;
+						box-sizing: border-box;
+						}
 
-        .avatar-bg-container img {
-            width: 140%; /* Compensamos la inclinación */
-            height: 100%;
-            object-fit: cover;
-            transform: skewX(20deg) translateX(5%);
-            opacity: 0.55;
-            transition: opacity 0.3s ease, transform 0.5s ease;
-        }
+						.fila-header {
+						color: #aaa;
+						font-size: 0.82rem;
+						text-transform: uppercase;
+						font-weight: bold;
+						border-bottom: 2px solid #2a2a35;
+						text-align: center;
+						}
 
-        /* Efecto cool al pasar el ratón */
-        .fila-jugador:hover .avatar-bg-container img {
-            opacity: 0.8;
-            transform: skewX(20deg) translateX(5%) scale(1.05);
-        }
+						.header-nombre { text-align: left; padding-left: 10px; }
+						.nombre { text-align: left; padding-left: 10px; font-weight: 800; font-size: 1.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; z-index: 2; text-shadow: 0 3px 6px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5); letter-spacing: 0.5px; width: 100%; }
 
-        /* Sombra de degradado para que se lean los textos y se fusione con la tabla */
-        .overlay-degradado {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(90deg, rgba(42,42,53,0) 15%, rgba(42,42,53,0.8) 85%, rgba(42,42,53,1) 100%);
-            pointer-events: none;
-        }
+						.fila-jugador {
+						background-color: rgba(42, 42, 53, 0.9);
+						border-radius: 8px;
+						border: 2px solid transparent;
+						text-align: center;
+						transition: background-color 0.3s, border-color 0.3s, grid-template-columns 0.45s cubic-bezier(0.4, 0, 0.2, 1), gap 0.45s ease;
+						position: relative;
+						overflow: hidden;
+						z-index: 1;
+						}
+						.fila-jugador:hover { background-color: #333344; }
 
-        .col-admin {
-            opacity: 0;
-            visibility: hidden;
-            transform: translateX(20px);
-            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
-            white-space: nowrap;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            overflow: hidden;
-        }
+						/* ESTILOS DEL WALLPAPER DE FONDO INCLINADO */
+						.avatar-bg-container {
+						position: absolute;
+						top: 0;
+						left: -5%;
+						width: 35%;
+						height: 100%;
+						transform: skewX(-20deg);
+						overflow: hidden;
+						border-right: 4px solid;
+						z-index: 0;
+						background-color: #1a1a24;
+						}
 
-        .admin-visible .col-admin {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(0);
-        }
+						.puesto-1 .avatar-bg-container { border-color: #ffd700; box-shadow: 8px 0 20px rgba(255,215,0,0.3); }
+						.puesto-2 .avatar-bg-container { border-color: #c0c0c0; box-shadow: 8px 0 20px rgba(192,192,192,0.3); }
+						.puesto-3 .avatar-bg-container { border-color: #cd7f32; box-shadow: 8px 0 20px rgba(205,127,50,0.3); }
+						.puesto-normal .avatar-bg-container { border-color: #a855f7; box-shadow: 8px 0 20px rgba(168,85,247,0.15); }
 
-        .puesto-1 { border-color: #ffd700; background-color: rgba(255, 215, 0, 0.05); }
-        .puesto-2 { border-color: #c0c0c0; background-color: rgba(192, 192, 192, 0.05); }
-        .puesto-3 { border-color: #cd7f32; background-color: rgba(205, 127, 50, 0.05); }
-        .puesto-normal { border-color: #8a2be2; background-color: rgba(138, 43, 226, 0.03); }
+						.avatar-bg-container img {
+						width: 150%;
+						height: 100%;
+						object-fit: cover;
+						object-position: center 25%;
+						transform: skewX(20deg) translateX(-10%);
+						opacity: 0.6;
+						transition: opacity 0.3s ease, transform 0.5s ease;
+						}
 
-        .posicion { font-weight: bold; font-size: 1.15rem; position: relative; z-index: 2; text-shadow: 0 3px 6px rgba(0,0,0,0.9); padding-left: 5px; }
-        .puesto-1 .posicion { color: #ffd700; text-shadow: 0 3px 6px rgba(0,0,0,0.9), 0 0 8px rgba(255,215,0,0.6); }
-        .puesto-2 .posicion { color: #c0c0c0; text-shadow: 0 3px 6px rgba(0,0,0,0.9); }
-        .puesto-3 .posicion { color: #cd7f32; text-shadow: 0 3px 6px rgba(0,0,0,0.9); }
-        .puesto-normal .posicion { color: #d8b4fe; text-shadow: 0 3px 6px rgba(0,0,0,0.9); }
+						.fila-jugador:hover .avatar-bg-container img {
+						opacity: 0.9;
+						transform: skewX(20deg) translateX(-10%) scale(1.05);
+						}
 
-        .nombre { font-weight: 800; font-size: 1.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; z-index: 2; text-shadow: 0 3px 6px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5); letter-spacing: 0.5px; padding-left: 10px; }
-        .puntos-copas { font-weight: bold; font-size: 1.15rem; color: #fff; position: relative; z-index: 2; text-shadow: 0 2px 4px rgba(0,0,0,0.7); }
-        
-        .total-carreras-num { font-weight: bold; font-size: 1.1rem; color: #ff9f43; position: relative; z-index: 2; }
-        .pts-promedio { font-weight: bold; font-size: 1.05rem; color: #1dd1a1; text-shadow: 0 0 5px rgba(29, 209, 161, 0.2); position: relative; z-index: 2; }
+						.overlay-degradado {
+						position: absolute;
+						top: 0; left: 0; right: 0; bottom: 0;
+						background: linear-gradient(90deg, rgba(42,42,53,0) 0%, rgba(42,42,53,0.4) 40%, rgba(42,42,53,0.95) 90%, rgba(42,42,53,1) 100%);
+						pointer-events: none;
+						}
 
-        .control-valores { display: flex; align-items: center; justify-content: center; gap: 4px; }
-        .btn-accion {
-            border: none; color: #fff; width: 24px; height: 24px; border-radius: 5px; cursor: pointer;
-            font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; transition: transform 0.1s;
-        }
-        .btn-accion:active { transform: scale(0.9); }
-        .btn-mas { background-color: #2ecc71; }
-        .btn-mas:hover { background-color: #27ae60; }
-        .btn-menos { background-color: #e74c3c; }
-        .btn-menos:hover { background-color: #c0392b; }
+						.col-admin {
+						opacity: 0;
+						visibility: hidden;
+						transform: translateX(20px);
+						transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
+						white-space: nowrap;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						width: 100%;
+						overflow: hidden;
+						}
 
-        .total-carrera { font-weight: bold; font-size: 1.1rem; color: #2f2; text-shadow: 0 0 5px rgba(46, 204, 113, 0.2); white-space: nowrap; position: relative; z-index: 2; }
-        
-        .input-sumar-carrera {
-            width: 100%; max-width: 80px; background-color: #141419; border: 1px solid #555;
-            color: #4af; padding: 5px; border-radius: 6px; text-align: center; font-weight: bold; font-size: 0.9rem; box-sizing: border-box;
-        }
-        .input-sumar-carrera.race-input { color: #ff9f43; }
-        
-        .admin-detalles {
-            margin-top: 20px; width: 100%; background-color: #1e1e24; border-radius: 12px; border: 1px solid #333; display: none; 
-        }
-        .admin-summary { padding: 12px; font-weight: bold; color: #888; cursor: pointer; text-align: center; font-size: 0.9rem; }
-        .admin-content { padding: 20px; border-top: 1px solid #2a2a35; display: flex; flex-wrap: wrap; gap: 25px; justify-content: space-around; }
-        .admin-box { display: flex; flex-direction: column; gap: 10px; min-width: 250px; }
-        .admin-box h3 { margin: 0 0 5px 0; font-size: 1rem; color: #ccc; }
-        .admin-input, .admin-select { background-color: #141419; border: 1px solid #555; color: #fff; padding: 8px; border-radius: 6px; }
-        .btn-admin { border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
-        .btn-add { background-color: #2ecc71; color: #fff; }
-        .btn-remove { background-color: #e74c3c; color: #fff; }
-        .btn-save-crypto { background-color: #ff9f43; color: #141419; font-weight: bold; }
-        .btn-save-crypto:hover { background-color: #ee8e32; }
-        
-        .btn-reset { background-color: transparent; border: 1px solid #444; color: #666; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 10px; }
-        .btn-reset:hover { border-color: #e74c3c; color: #e74c3c; }
+						.admin-visible .col-admin {
+						opacity: 1;
+						visibility: visible;
+						transform: translateX(0);
+						}
 
-        /* BOTÓN DE ADMINISTRAR ARRIBA A LA DERECHA */
-        .btn-login-flotante {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #2c2c38;
-            border: 2px solid #555;
-            color: #aaa;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: all 0.2s ease;
-        }
-        .btn-login-flotante.activo {
-            background-color: #e74c3c;
-            border-color: #ff6b6b;
-            color: #fff;
-        }
+						.puesto-1 { border-color: #ffd700; background-color: rgba(255, 215, 0, 0.05); }
+						.puesto-2 { border-color: #c0c0c0; background-color: rgba(192, 192, 192, 0.05); }
+						.puesto-3 { border-color: #cd7f32; background-color: rgba(205, 127, 50, 0.05); }
+						.puesto-normal { border-color: #8a2be2; background-color: rgba(138, 43, 226, 0.03); }
 
-        /* REPRODUCTOR DE MÚSICA AVANZADO */
-        .controles-audio {
-            margin-top: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: rgba(30, 30, 36, 0.85);
-            padding: 12px 25px;
-            border-radius: 40px;
-            border: 1px solid #444;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-        }
-        .btn-track {
-            background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: white; transition: transform 0.1s;
-        }
-        .btn-track:hover { transform: scale(1.15); }
-        .btn-track:active { transform: scale(0.9); }
-        #btn-mute { background: transparent; border: none; font-size: 1.2rem; cursor: pointer; color: white; transition: 0.2s; margin-left: 10px; }
-        #btn-mute:hover { transform: scale(1.1); }
-        #volumen-music { cursor: pointer; accent-color: #4af; width: 80px; }
-        
-        .info-track {
-            display: flex;
-            flex-direction: column;
-            margin-left: 15px;
-            width: 180px;
-            overflow: hidden;
-            border-left: 1px solid #555;
-            padding-left: 15px;
-        }
-        .info-track marquee { font-weight: bold; font-size: 0.95rem; color: #fff; }
-        .track-creator { font-size: 0.75rem; color: #aaa; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
+						.posicion { font-weight: bold; font-size: 1.15rem; position: relative; z-index: 2; text-shadow: 0 3px 6px rgba(0,0,0,0.9); text-align: center; }
+						.puesto-1 .posicion { color: #ffd700; text-shadow: 0 3px 6px rgba(0,0,0,0.9), 0 0 8px rgba(255,215,0,0.6); }
+						.puesto-2 .posicion { color: #c0c0c0; text-shadow: 0 3px 6px rgba(0,0,0,0.9); }
+						.puesto-3 .posicion { color: #cd7f32; text-shadow: 0 3px 6px rgba(0,0,0,0.9); }
+						.puesto-normal .posicion { color: #d8b4fe; text-shadow: 0 3px 6px rgba(0,0,0,0.9); }
 
-        /* CRÉDITOS FOOTER */
-        .footer-creditos {
-            margin-top: 50px;
-            text-align: center;
-            color: #666;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-    </style>
+						.puntos-copas { font-weight: bold; font-size: 1.15rem; color: #fff; position: relative; z-index: 2; text-shadow: 0 2px 4px rgba(0,0,0,0.7); text-align: center; }
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-</head>
-<body>
+						.total-carreras-num { font-weight: bold; font-size: 1.1rem; color: #ff9f43; position: relative; z-index: 2; text-align: center; }
+						.pts-promedio { font-weight: bold; font-size: 1.05rem; color: #1dd1a1; text-shadow: 0 0 5px rgba(29, 209, 161, 0.2); position: relative; z-index: 2; text-align: center; }
 
-    <div id="pantalla-bloqueo-global">
-        <div class="caja-bloqueo">
-            <h3>Acceso Privado</h3>
-            <p style="color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Esta clasificación es privada. Introduce la contraseña para entrar.</p>
-            <input type="password" id="clave-acceso-crew" class="input-bloqueo" placeholder="Contraseña..." onkeydown="evaluarEnterBloqueo(event)">
-            <button class="btn-bloqueo" onclick="verificarAccesoGlobal()">Entrar a la Pista</button>
-        </div>
-    </div>
+						.control-valores { display: flex; align-items: center; justify-content: center; gap: 4px; }
+						.btn-accion {
+						border: none; color: #fff; width: 24px; height: 24px; border-radius: 5px; cursor: pointer;
+						font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; transition: transform 0.1s;
+						}
+						.btn-accion:active { transform: scale(0.9); }
+						.btn-mas { background-color: #2ecc71; }
+						.btn-mas:hover { background-color: #27ae60; }
+						.btn-menos { background-color: #e74c3c; }
+						.btn-menos:hover { background-color: #c0392b; }
 
-    <div id="contenido-principal" style="display:none;">
-        
-        <div class="contenedor-logo">
-            <img src="MKWDX_logo.png" alt="Logo Mario Kart Wii Deluxe X" class="logo-mario-kart">
-        </div>
-        
-        <div class="subtitulo">Sincronizado en Tiempo Real</div>
+						.total-carrera { font-weight: bold; font-size: 1.1rem; color: #2f2; text-shadow: 0 0 5px rgba(46, 204, 113, 0.2); white-space: nowrap; position: relative; z-index: 2; text-align: center; }
 
-        <div class="container" id="tabla-marcador-contenedor">
-            <div class="header-copa-interna">
-                <span id="marcador-copas-actuales">🏁 COPA / RONDA: --</span>
-                <div class="caja-empates">Empates: <span id="num-empates-vista">0</span></div>
-            </div>
-            
-            <div class="fila-header" id="tabla-header">
-                <div>Pos</div>
-                <div style="text-align: left;">Jugador</div>
-                <div>🏆 Copas</div>
-                <div class="col-admin">Modif.</div>
-                <div>⭐ Perfect</div>
-                <div class="col-admin">Modif.</div>
-                <div>🏁 Pistas</div>
-                <div>📈 Avg Pts</div>
-                <div>📊 Total Pts</div>
-                <div class="col-admin">➕ Pistas</div>
-                <div class="col-admin">➕ Puntos</div>
-            </div>
-            
-            <div id="tabla-body" class="tabla-animada"></div>
+						.input-sumar-carrera {
+						width: 100%; max-width: 80px; background-color: #141419; border: 1px solid #555;
+						color: #4af; padding: 5px; border-radius: 6px; text-align: center; font-weight: bold; font-size: 0.9rem; box-sizing: border-box;
+						}
+						.input-sumar-carrera.race-input { color: #ff9f43; }
+
+						.admin-detalles {
+						margin-top: 20px; width: 100%; background-color: #1e1e24; border-radius: 12px; border: 1px solid #333; display: none;
+						}
+						.admin-summary { padding: 12px; font-weight: bold; color: #888; cursor: pointer; text-align: center; font-size: 0.9rem; }
+						.admin-content { padding: 20px; border-top: 1px solid #2a2a35; display: flex; flex-wrap: wrap; gap: 25px; justify-content: space-around; }
+						.admin-box { display: flex; flex-direction: column; gap: 10px; min-width: 250px; }
+						.admin-box h3 { margin: 0 0 5px 0; font-size: 1rem; color: #ccc; }
+						.admin-input, .admin-select { background-color: #141419; border: 1px solid #555; color: #fff; padding: 8px; border-radius: 6px; }
+						.btn-admin { border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+						.btn-add { background-color: #2ecc71; color: #fff; }
+						.btn-remove { background-color: #e74c3c; color: #fff; }
+						.btn-save-crypto { background-color: #ff9f43; color: #141419; font-weight: bold; }
+						.btn-save-crypto:hover { background-color: #ee8e32; }
+
+						.btn-reset { background-color: transparent; border: 1px solid #444; color: #666; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+						.btn-reset:hover { border-color: #e74c3c; color: #e74c3c; }
+
+						/* BOTÓN DE ADMINISTRAR ARRIBA A LA DERECHA */
+						.btn-login-flotante {
+						position: fixed;
+						top: 20px;
+						right: 20px;
+						background-color: #2c2c38;
+						border: 2px solid #555;
+						color: #aaa;
+						padding: 8px 16px;
+						border-radius: 8px;
+						font-weight: bold;
+						cursor: pointer;
+						box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						z-index: 9999;
+						transition: all 0.2s ease;
+						}
+						.btn-login-flotante.activo {
+						background-color: #e74c3c;
+						border-color: #ff6b6b;
+						color: #fff;
+						}
+
+						/* REPRODUCTOR DE MÚSICA AVANZADO */
+						.controles-audio {
+						margin-top: 40px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						gap: 12px;
+						background: rgba(30, 30, 36, 0.85);
+						padding: 12px 25px;
+						border-radius: 40px;
+						border: 1px solid #444;
+						box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+						backdrop-filter: blur(8px);
+						}
+						.btn-track {
+						background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: white; transition: transform 0.1s;
+						}
+						.btn-track:hover { transform: scale(1.15); }
+						.btn-track:active { transform: scale(0.9); }
+						#btn-mute { background: transparent; border: none; font-size: 1.2rem; cursor: pointer; color: white; transition: 0.2s; margin-left: 10px; }
+						#btn-mute:hover { transform: scale(1.1); }
+						#volumen-music { cursor: pointer; accent-color: #4af; width: 80px; }
+
+						.info-track {
+						display: flex;
+						flex-direction: column;
+						margin-left: 15px;
+						width: 180px;
+						overflow: hidden;
+						border-left: 1px solid #555;
+						padding-left: 15px;
+						}
+						.info-track marquee { font-weight: bold; font-size: 0.95rem; color: #fff; }
+						.track-creator { font-size: 0.75rem; color: #aaa; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
+
+						/* CRÉDITOS FOOTER */
+						.footer-creditos {
+						margin-top: 50px;
+						text-align: center;
+						color: #666;
+						font-size: 0.85rem;
+						letter-spacing: 0.5px;
+						}
+					</style>
+
+					<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+					<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+				</head>
+	<body>
+
+		<div id="pantalla-bloqueo-global">
+			<div class="caja-bloqueo">
+				<h3>Acceso Privado</h3>
+				<p style="color: #aaa; font-size: 0.85rem; margin-bottom: 20px;">Esta clasificación es privada. Introduce la contraseña para entrar.</p>
+				<input type="password" id="clave-acceso-crew" class="input-bloqueo" placeholder="Contraseña..." onkeydown="evaluarEnterBloqueo(event)">
+					<button class="btn-bloqueo" onclick="verificarAccesoGlobal()">Entrar a la Pista</button>
+				</div>
+		</div>
+
+		<div id="contenido-principal" style="display:none;">
+
+			<div class="contenedor-logo">
+				<img src="MKWDX_logo.png" alt="Logo Mario Kart Wii Deluxe X" class="logo-mario-kart">
         </div>
 
-        <!-- REPRODUCTOR DE MÚSICA CON CATÁLOGO -->
-        <audio id="bg-music" preload="auto"></audio>
-        <div class="controles-audio">
-            <button class="btn-track" onclick="prevTrack()">⏮️</button>
-            <button id="btn-play" class="btn-track" onclick="togglePlay()">▶️</button>
-            <button class="btn-track" onclick="nextTrack()">⏭️</button>
-            <button id="btn-mute" onclick="toggleMute()">🔊</button>
-            <input type="range" id="volumen-music" min="0" max="1" step="0.01" value="0.3" oninput="cambiarVolumen()">
-            <div class="info-track">
-                <marquee id="track-name" scrollamount="4">Cargando pistas...</marquee>
-                <div id="track-creator" class="track-creator">---</div>
-            </div>
-        </div>
+			<div class="subtitulo">Sincronizado en Tiempo Real</div>
 
-        <details class="admin-detalles" id="panel-gestion-root">
-            <summary class="admin-summary">⚙️ Panel de Gestión</summary>
-            <div class="admin-content">
-                <div class="admin-box">
-                    <h3>Añadir Nuevo Corredor</h3>
-                    <input type="text" id="nuevo-nombre" class="admin-input" placeholder="Nombre...">
-                    <button class="btn-admin btn-add" onclick="agregarJugador()">＋ Registrar</button>
-                </div>
-                
-                <div class="admin-box">
-                    <h3>Eliminar Corredor</h3>
-                    <select id="select-eliminar" class="admin-select"></select>
-                    <button class="btn-admin btn-remove" onclick="eliminarJugador()">✕ Eliminar</button>
-                </div>
+			<div class="container" id="tabla-marcador-contenedor">
+				<div class="header-copa-interna">
+					<span id="marcador-copas-actuales">🏁 COPA / RONDA: --</span>
+					<div class="caja-empates">
+						Empates: <span id="num-empates-vista">0</span>
+					</div>
+				</div>
 
-                <!-- CAJA DE GESTIÓN DE WALLPAPER DE PERFIL -->
-                <div class="admin-box" style="border: 1px dashed #3498db; padding: 15px; border-radius: 8px;">
-                    <h3 style="color: #3498db;">🖼️ Cambiar Avatar</h3>
-                    <select id="select-avatar" class="admin-select"></select>
-                    <input type="text" id="input-avatar-url" class="admin-input" placeholder="Ruta (Ej: profpic/dex.jpg)">
-                    <button class="btn-admin btn-add" style="margin-top: 5px; background-color: #3498db;" onclick="guardarAvatar()">💾 Guardar Foto</button>
-                </div>
+				<div class="fila-header" id="tabla-header">
+					<div>Pos</div>
+					<div class="header-nombre">Jugador</div>
+					<div>🏆 Copas</div>
+					<div class="col-admin">Modif.</div>
+					<div>⭐ Perfect</div>
+					<div class="col-admin">Modif.</div>
+					<div>🏁 Pistas</div>
+					<div>📈 Avg Pts</div>
+					<div>📊 Total Pts</div>
+					<div class="col-admin">➕ Pistas</div>
+					<div class="col-admin">➕ Puntos</div>
+				</div>
 
-                <div class="admin-box" style="border: 1px dashed #555; padding: 15px; border-radius: 8px;">
-                    <h3 style="color: #4af;">🏆 Definir Copa / Ronda</h3>
-                    <input type="text" id="input-copas-sistema" class="admin-input" placeholder="Ej: Copa 16" onblur="guardarCopasSistema()">
-                </div>
+				<div id="tabla-body" class="tabla-animada"></div>
+			</div>
 
-                <div class="admin-box" style="border: 1px dashed #e74c3c; padding: 15px; border-radius: 8px;">
-                    <h3 style="color: #ff6b6b;">🤝 Ajustar Empates</h3>
-                    <input type="number" id="input-empates-sistema" class="admin-input" placeholder="Ej: 2" onblur="guardarEmpatesSistema()">
-                </div>
+			<!-- REPRODUCTOR DE MÚSICA CON CATÁLOGO -->
+			<audio id="bg-music" preload="auto"></audio>
+			<div class="controles-audio">
+				<button class="btn-track" onclick="prevTrack()">⏮️</button>
+				<button id="btn-play" class="btn-track" onclick="togglePlay()">▶️</button>
+				<button class="btn-track" onclick="nextTrack()">⏭️</button>
+				<button id="btn-mute" onclick="toggleMute()">🔊</button>
+				<input type="range" id="volumen-music" min="0" max="1" step="0.01" value="0.3" oninput="cambiarVolumen()">
+					<div class="info-track">
+						<marquee id="track-name" scrollamount="4">Cargando pistas...</marquee>
+						<div id="track-creator" class="track-creator">---</div>
+					</div>
+				</div>
 
-                <div class="admin-box" style="border: 1px dashed #9b59b6; padding: 15px; border-radius: 8px;">
-                    <h3 style="color: #c39bd3;">🎵 Añadir Canción</h3>
-                    <input type="text" id="nueva-cancion-titulo" class="admin-input" placeholder="Título (Ej: N64 Rainbow Road)">
-                    <input type="text" id="nueva-cancion-creador" class="admin-input" placeholder="Creador (Ej: Nintendo)">
-                    <input type="text" id="nueva-cancion-url" class="admin-input" placeholder="Ruta (Ej: musicmenu/menu_4.mp3)">
-                    <button class="btn-admin btn-add" style="margin-top: 5px;" onclick="agregarCancion()">➕ Añadir Pista</button>
-                </div>
+			<details class="admin-detalles" id="panel-gestion-root">
+				<summary class="admin-summary">⚙️ Panel de Gestión</summary>
+				<div class="admin-content">
+					<div class="admin-box">
+						<h3>Añadir Nuevo Corredor</h3>
+						<input type="text" id="nuevo-nombre" class="admin-input" placeholder="Nombre...">
+							<button class="btn-admin btn-add" onclick="agregarJugador()">＋ Registrar</button>
+						</div>
 
-                <div class="admin-box" style="border: 1px dashed #7f8fa6; padding: 15px; border-radius: 8px;">
-                    <h3 style="color: #a4b0be;">🏷️ Versión del Sistema</h3>
-                    <input type="text" id="input-version-sistema" class="admin-input" placeholder="Ej: 1.1.0" onblur="guardarVersionSistema()">
-                </div>
+					<div class="admin-box">
+						<h3>Eliminar Corredor</h3>
+						<select id="select-eliminar" class="admin-select"></select>
+						<button class="btn-admin btn-remove" onclick="eliminarJugador()">✕ Eliminar</button>
+					</div>
 
-                <div class="admin-box" style="border: 1px dashed #444; padding: 15px; border-radius: 8px;">
-                    <h3 style="color: #ff9f43;">🔐 Seguridad y Claves</h3>
-                    <select id="tipo-clave-cambiar" class="admin-select">
-                        <option value="crew">Contraseña de Entrada (Crew)</option>
-                        <option value="admin">Contraseña de Administrador</option>
-                    </select>
-                    <input type="password" id="nueva-clave-valor" class="admin-input" placeholder="Nueva Contraseña...">
-                    <input type="password" id="confirmar-admin-actual" class="admin-input" placeholder="Contraseña Admin Actual...">
-                    <button class="btn-admin btn-save-crypto" onclick="procesarCambioContrasena()">💾 Guardar Nueva Clave</button>
+					<!-- CAJA DE GESTIÓN DE WALLPAPER DE PERFIL -->
+					<div class="admin-box" style="border: 1px dashed #3498db; padding: 15px; border-radius: 8px;">
+						<h3 style="color: #3498db;">🖼️ Cambiar Avatar</h3>
+						<select id="select-avatar" class="admin-select"></select>
+						<input type="text" id="input-avatar-url" class="admin-input" placeholder="Ruta (Ej: profpic/dex.jpg)">
+							<button class="btn-admin btn-add" style="margin-top: 5px; background-color: #3498db;" onclick="guardarAvatar()">💾 Guardar Foto</button>
+						</div>
+
+					<div class="admin-box" style="border: 1px dashed #555; padding: 15px; border-radius: 8px;">
+						<h3 style="color: #4af;">🏆 Definir Copa / Ronda</h3>
+						<input type="text" id="input-copas-sistema" class="admin-input" placeholder="Ej: Copa 16" onblur="guardarCopasSistema()">
                 </div>
 
-                <div style="display: flex; width: 100%; justify-content: center; gap: 10px;">
-                    <button class="btn-reset" onclick="reiniciarTabla()">🔄 Reiniciar todo a 0</button>
+					<div class="admin-box" style="border: 1px dashed #e74c3c; padding: 15px; border-radius: 8px;">
+						<h3 style="color: #ff6b6b;">🤝 Ajustar Empates</h3>
+						<input type="number" id="input-empates-sistema" class="admin-input" placeholder="Ej: 2" onblur="guardarEmpatesSistema()">
                 </div>
-            </div>
-        </details>
 
-        <div class="footer-creditos">
-            hecha por DexallStart. v<span id="version-vista">1.1.0</span>
-        </div>
+					<div class="admin-box" style="border: 1px dashed #9b59b6; padding: 15px; border-radius: 8px;">
+						<h3 style="color: #c39bd3;">🎵 Añadir Canción</h3>
+						<input type="text" id="nueva-cancion-titulo" class="admin-input" placeholder="Título (Ej: N64 Rainbow Road)">
+							<input type="text" id="nueva-cancion-creador" class="admin-input" placeholder="Creador (Ej: Nintendo)">
+								<input type="text" id="nueva-cancion-url" class="admin-input" placeholder="Ruta (Ej: musicmenu/menu_4.mp3)">
+									<button class="btn-admin btn-add" style="margin-top: 5px;" onclick="agregarCancion()">➕ Añadir Pista</button>
+								</div>
 
-        <button class="btn-login-flotante" id="btn-candado" onclick="conmutarModoAdmin()">
-            <span id="texto-candado">Administrar</span>
-        </button>
-    </div>
+					<div class="admin-box" style="border: 1px dashed #7f8fa6; padding: 15px; border-radius: 8px;">
+						<h3 style="color: #a4b0be;">🏷️ Versión del Sistema</h3>
+						<input type="text" id="input-version-sistema" class="admin-input" placeholder="Ej: 1.1.0" onblur="guardarVersionSistema()">
+                </div>
 
-    <script>
-        let CLAVE_CREW_SISTEMA = "mario-crew-2026";
-        let CLAVE_SECRETA_ADMIN = "enerbelaskn25";
+					<div class="admin-box" style="border: 1px dashed #444; padding: 15px; border-radius: 8px;">
+						<h3 style="color: #ff9f43;">🔐 Seguridad y Claves</h3>
+						<select id="tipo-clave-cambiar" class="admin-select">
+							<option value="crew">Contraseña de Entrada (Crew)</option>
+							<option value="admin">Contraseña de Administrador</option>
+						</select>
+						<input type="password" id="nueva-clave-valor" class="admin-input" placeholder="Nueva Contraseña...">
+							<input type="password" id="confirmar-admin-actual" class="admin-input" placeholder="Contraseña Admin Actual...">
+								<button class="btn-admin btn-save-crypto" onclick="procesarCambioContrasena()">💾 Guardar Nueva Clave</button>
+							</div>
 
-        const musica = document.getElementById('bg-music');
-        musica.volume = 0.3;
-        
-        let playlist = [];
-        let currentTrackIndex = 0;
+					<div style="display: flex; width: 100%; justify-content: center; gap: 10px;">
+						<button class="btn-reset" onclick="reiniciarTabla()">🔄 Reiniciar todo a 0</button>
+					</div>
+				</div>
+			</details>
 
-        function cargarCancion(index) {
-            if (playlist.length === 0) return;
-            currentTrackIndex = index;
-            const pista = playlist[currentTrackIndex];
-            musica.src = pista.url;
-            document.getElementById('track-name').innerText = pista.title;
-            document.getElementById('track-creator').innerText = pista.creator;
-        }
+			<div class="footer-creditos">
+				hecha por DexallStart. v<span id="version-vista">1.1.0</span>
+			</div>
 
-        musica.addEventListener('ended', nextTrack);
+			<button class="btn-login-flotante" id="btn-candado" onclick="conmutarModoAdmin()">
+				<span id="texto-candado">Administrar</span>
+			</button>
+		</div>
 
-        function togglePlay() {
-            if (musica.paused) {
-                musica.play().catch(e => console.log("Interacción requerida"));
-                document.getElementById('btn-play').innerText = '⏸️';
-            } else {
-                musica.pause();
-                document.getElementById('btn-play').innerText = '▶️';
-            }
-        }
+		<script>
+			let CLAVE_CREW_SISTEMA = "mario-crew-2026";
+			let CLAVE_SECRETA_ADMIN = "enerbelaskn25";
 
-        function nextTrack() {
-            if (playlist.length === 0) return;
-            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-            cargarCancion(currentTrackIndex);
-            musica.play();
-            document.getElementById('btn-play').innerText = '⏸️';
-        }
+			const musica = document.getElementById('bg-music');
+			musica.volume = 0.3;
 
-        function prevTrack() {
-            if (playlist.length === 0) return;
-            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-            cargarCancion(currentTrackIndex);
-            musica.play();
-            document.getElementById('btn-play').innerText = '⏸️';
-        }
+			let playlist = [];
+			let currentTrackIndex = 0;
 
-        function toggleMute() {
-            musica.muted = !musica.muted;
-            document.getElementById('btn-mute').innerText = musica.muted ? '🔇' : '🔊';
-        }
+			function cargarCancion(index) {
+			if (playlist.length === 0) return;
+			currentTrackIndex = index;
+			const pista = playlist[currentTrackIndex];
+			musica.src = pista.url;
+			document.getElementById('track-name').innerText = pista.title;
+			document.getElementById('track-creator').innerText = pista.creator;
+			}
 
-        function cambiarVolumen() {
-            musica.volume = document.getElementById('volumen-music').value;
-            if(musica.volume > 0) {
-                musica.muted = false;
-                document.getElementById('btn-mute').innerText = '🔊';
-            } else {
-                musica.muted = true;
-                document.getElementById('btn-mute').innerText = '🔇';
-            }
-        }
+			musica.addEventListener('ended', nextTrack);
 
-        function evaluarEnterBloqueo(e) {
-            if(e.key === 'Enter') verificarAccesoGlobal();
-        }
+			function togglePlay() {
+			if (musica.paused) {
+			musica.play().catch(e => console.log("Interacción requerida"));
+			document.getElementById('btn-play').innerText = '⏸️';
+			} else {
+			musica.pause();
+			document.getElementById('btn-play').innerText = '▶️';
+			}
+			}
 
-        function desvanecerBloqueo() {
-            document.getElementById('pantalla-bloqueo-global').style.display = 'none';
-            document.getElementById('contenido-principal').style.display = 'flex';
-        }
+			function nextTrack() {
+			if (playlist.length === 0) return;
+			currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+			cargarCancion(currentTrackIndex);
+			musica.play();
+			document.getElementById('btn-play').innerText = '⏸️';
+			}
 
-        if (localStorage.getItem('sesion_usuario_activa') === 'true') {
-            document.write('<style>#pantalla-bloqueo-global { display: none !important; } #contenido-principal { display: flex !important; }</style>');
-            window.addEventListener('DOMContentLoaded', () => {
-                desvanecerBloqueo();
-                inicializarTodo();
-                document.body.addEventListener('click', () => { 
-                    if(musica.paused && playlist.length > 0) {
-                        musica.play();
-                        document.getElementById('btn-play').innerText = '⏸️';
-                    }
-                }, { once: true });
-            });
-        } else {
-            window.addEventListener('DOMContentLoaded', () => {
-                inicializarTodo();
-            });
-        }
+			function prevTrack() {
+			if (playlist.length === 0) return;
+			currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+			cargarCancion(currentTrackIndex);
+			musica.play();
+			document.getElementById('btn-play').innerText = '⏸️';
+			}
 
-        function verificarAccesoGlobal() {
-            const input = document.getElementById('clave-acceso-crew');
-            if (input.value === CLAVE_CREW_SISTEMA) {
-                localStorage.setItem('sesion_usuario_activa', 'true');
-                desvanecerBloqueo();
-                conectarFirebase();
-                if (playlist.length > 0) {
-                    musica.play();
-                    document.getElementById('btn-play').innerText = '⏸️';
-                }
-            } else {
-                alert("Contraseña incorrecta. Acceso denegado.");
-                input.value = "";
-            }
-        }
+			function toggleMute() {
+			musica.muted = !musica.muted;
+			document.getElementById('btn-mute').innerText = musica.muted ? '🔇' : '🔊';
+			}
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBaFKG2YA1AGiVWsAmqjWzewGWXq8Szsu0",
-            authDomain: "mariokart-live.firebaseapp.com",
-            databaseURL: "https://mariokart-live-default-rtdb.firebaseio.com",
-            projectId: "mariokart-live",
-            storageBucket: "mariokart-live.firebasestorage.app",
-            messagingSenderId: "708133885673",
-            appId: "1:708133885673:web:2d108ea14651c2f3ac4278"
-        };
-        
-        let db;
-        let jugadores = [];
-        let modoAdminActivo = false;
+			function cambiarVolumen() {
+			musica.volume = document.getElementById('volumen-music').value;
+			if(musica.volume > 0) {
+			musica.muted = false;
+			document.getElementById('btn-mute').innerText = '🔊';
+			} else {
+			musica.muted = true;
+			document.getElementById('btn-mute').innerText = '🔇';
+			}
+			}
 
-        const tablaBody = document.getElementById('tabla-body');
-        const selectEliminar = document.getElementById('select-eliminar');
-        const selectAvatar = document.getElementById('select-avatar');
-        const panelGestionRoot = document.getElementById('panel-gestion-root');
-        const btnCandado = document.getElementById('btn-candado');
-        const textoCandado = document.getElementById('texto-candado');
-        const marcadorCopas = document.getElementById('marcador-copas-actuales');
-        const contenedorMarcador = document.getElementById('tabla-marcador-contenedor');
+			function evaluarEnterBloqueo(e) {
+			if(e.key === 'Enter') verificarAccesoGlobal();
+			}
 
-        function inicializarTodo() {
-            if (firebase.apps.length === 0) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            db = firebase.database();
-            
-            db.ref('configuracion/playlist').on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    playlist = Object.keys(data).map(key => data[key]);
-                } else {
-                    playlist = [
-                        { url: 'musicmenu/menu_0.mp3', title: 'Mii Maker (Wii U)', creator: 'Nintendo' },
-                        { url: 'musicmenu/menu_1.mp3', title: 'Electrodome', creator: 'Nintendo' },
-                        { url: 'musicmenu/menu_2.mp3', title: 'Stickerbrush Symphony', creator: 'David Wise' },
-                        { url: 'musicmenu/menu_3.mp3', title: 'Cheese Land', creator: 'Nintendo' }
-                    ];
-                    db.ref('configuracion/playlist').set(playlist);
-                }
-                
-                if(musica.src === "" || musica.src === window.location.href) {
-                    cargarCancion(0);
-                }
-            });
+			function desvanecerBloqueo() {
+			document.getElementById('pantalla-bloqueo-global').style.display = 'none';
+			document.getElementById('contenido-principal').style.display = 'flex';
+			}
 
-            db.ref('configuracion/claves').on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    if (data.crew) CLAVE_CREW_SISTEMA = data.crew;
-                    if (data.admin) CLAVE_SECRETA_ADMIN = data.admin;
-                }
-            });
+			if (localStorage.getItem('sesion_usuario_activa') === 'true') {
+			document.write('<style>#pantalla-bloqueo-global { display: none !important; } #contenido-principal { display: flex !important; }</style>');
+			window.addEventListener('DOMContentLoaded', () => {
+			desvanecerBloqueo();
+			inicializarTodo();
+			});
+			} else {
+			window.addEventListener('DOMContentLoaded', () => {
+			inicializarTodo();
+			});
+			}
 
-            db.ref('configuracion/copas_actuales').on('value', (snapshot) => {
-                const textoCopas = snapshot.val();
-                if (textoCopas) {
-                    marcadorCopas.innerText = `🏁 COPA / RONDA: ${textoCopas}`;
-                    document.getElementById('input-copas-sistema').value = textoCopas;
-                } else {
-                    marcadorCopas.innerText = `🏁 COPA / RONDA: --`;
-                }
-            });
+			function verificarAccesoGlobal() {
+			const input = document.getElementById('clave-acceso-crew');
+			if (input.value === CLAVE_CREW_SISTEMA) {
+			localStorage.setItem('sesion_usuario_activa', 'true');
+			desvanecerBloqueo();
+			conectarFirebase();
+			} else {
+			alert("Contraseña incorrecta. Acceso denegado.");
+			input.value = "";
+			}
+			}
 
-            db.ref('configuracion/empates').on('value', (snapshot) => {
-                const empates = snapshot.val();
-                document.getElementById('num-empates-vista').innerText = empates || 0;
-                const inputEmpates = document.getElementById('input-empates-sistema');
-                if (inputEmpates) inputEmpates.value = empates || 0;
-            });
+			const firebaseConfig = {
+			apiKey: "AIzaSyBaFKG2YA1AGiVWsAmqjWzewGWXq8Szsu0",
+			authDomain: "mariokart-live.firebaseapp.com",
+			databaseURL: "https://mariokart-live-default-rtdb.firebaseio.com",
+			projectId: "mariokart-live",
+			storageBucket: "mariokart-live.firebasestorage.app",
+			messagingSenderId: "708133885673",
+			appId: "1:708133885673:web:2d108ea14651c2f3ac4278"
+			};
 
-            db.ref('configuracion/version').on('value', (snapshot) => {
-                const version = snapshot.val() || "1.1.0";
-                document.getElementById('version-vista').innerText = version;
-                const inputVersion = document.getElementById('input-version-sistema');
-                if (inputVersion) inputVersion.value = version;
-            });
+			let db;
+			let jugadores = [];
+			let modoAdminActivo = false;
 
-            if (localStorage.getItem('sesion_usuario_activa') === 'true') {
-                conectarFirebase();
-            }
-        }
+			const tablaBody = document.getElementById('tabla-body');
+			const selectEliminar = document.getElementById('select-eliminar');
+			const selectAvatar = document.getElementById('select-avatar');
+			const panelGestionRoot = document.getElementById('panel-gestion-root');
+			const btnCandado = document.getElementById('btn-candado');
+			const textoCandado = document.getElementById('texto-candado');
+			const marcadorCopas = document.getElementById('marcador-copas-actuales');
+			const contenedorMarcador = document.getElementById('tabla-marcador-contenedor');
 
-        function conectarFirebase() {
-            db.ref('jugadores').on('value', (snapshot) => {
-                const datos = snapshot.val();
-                if (datos) {
-                    jugadores = Object.keys(datos).map(key => ({
-                        firebaseKey: key, 
-                        ...datos[key]
-                    }));
-                } else {
-                    jugadores = [];
-                }
-                actualizarSelectsAdmin();
-                renderTabla();
-            });
-        }
+			function inicializarTodo() {
+			if (firebase.apps.length === 0) {
+			firebase.initializeApp(firebaseConfig);
+			}
+			db = firebase.database();
 
-        function guardarAvatar() {
-            const key = document.getElementById('select-avatar').value;
-            const url = document.getElementById('input-avatar-url').value.trim();
-            if(!key || !db) return;
-            
-            db.ref('jugadores/' + key + '/avatar').set(url).then(() => {
-                alert("¡Foto de perfil actualizada con éxito!");
-                document.getElementById('input-avatar-url').value = '';
-            });
-        }
+			db.ref('configuracion/playlist').on('value', (snapshot) => {
+			const data = snapshot.val();
+			if (data) {
+			playlist = Object.keys(data).map(key => data[key]);
+			} else {
+			playlist = [
+			{ url: 'musicmenu/menu_0.mp3', title: 'Mii Maker (Wii U)', creator: 'Nintendo' },
+			{ url: 'musicmenu/menu_1.mp3', title: 'Electrodome', creator: 'Nintendo' },
+			{ url: 'musicmenu/menu_2.mp3', title: 'Stickerbrush Symphony', creator: 'David Wise' },
+			{ url: 'musicmenu/menu_3.mp3', title: 'Cheese Land', creator: 'Nintendo' }
+			];
+			db.ref('configuracion/playlist').set(playlist);
+			}
 
-        function agregarCancion() {
-            const titulo = document.getElementById('nueva-cancion-titulo').value.trim();
-            const creador = document.getElementById('nueva-cancion-creador').value.trim();
-            const url = document.getElementById('nueva-cancion-url').value.trim();
+			if(musica.src === "" || musica.src === window.location.href) {
+			cargarCancion(0);
+			}
+			});
 
-            if(!titulo || !creador || !url) {
-                alert("Por favor rellena el título, creador y la ruta (Ej: musicmenu/menu_4.mp3)");
-                return;
-            }
+			db.ref('configuracion/claves').on('value', (snapshot) => {
+			const data = snapshot.val();
+			if (data) {
+			if (data.crew) CLAVE_CREW_SISTEMA = data.crew;
+			if (data.admin) CLAVE_SECRETA_ADMIN = data.admin;
+			}
+			});
 
-            const nuevaPista = { title: titulo, creator: creador, url: url };
-            if (db) {
-                db.ref('configuracion/playlist').push(nuevaPista).then(() => {
-                    document.getElementById('nueva-cancion-titulo').value = '';
-                    document.getElementById('nueva-cancion-creador').value = '';
-                    document.getElementById('nueva-cancion-url').value = '';
-                    alert("¡Pista musical añadida al catálogo!");
-                });
-            }
-        }
+			db.ref('configuracion/copas_actuales').on('value', (snapshot) => {
+			const textoCopas = snapshot.val();
+			if (textoCopas) {
+			marcadorCopas.innerText = `🏁 COPA / RONDA: ${textoCopas}`;
+			document.getElementById('input-copas-sistema').value = textoCopas;
+			} else {
+			marcadorCopas.innerText = `🏁 COPA / RONDA: --`;
+			}
+			});
 
-        function guardarCopasSistema() {
-            const input = document.getElementById('input-copas-sistema');
-            if (db) db.ref('configuracion/copas_actuales').set(input.value.trim());
-        }
+			db.ref('configuracion/empates').on('value', (snapshot) => {
+			const empates = snapshot.val();
+			document.getElementById('num-empates-vista').innerText = empates || 0;
+			const inputEmpates = document.getElementById('input-empates-sistema');
+			if (inputEmpates) inputEmpates.value = empates || 0;
+			});
 
-        function guardarEmpatesSistema() {
-            const input = document.getElementById('input-empates-sistema');
-            if (db) db.ref('configuracion/empates').set(input.value.trim());
-        }
+			db.ref('configuracion/version').on('value', (snapshot) => {
+			const version = snapshot.val() || "1.1.0";
+			document.getElementById('version-vista').innerText = version;
+			const inputVersion = document.getElementById('input-version-sistema');
+			if (inputVersion) inputVersion.value = version;
+			});
 
-        function guardarVersionSistema() {
-            const input = document.getElementById('input-version-sistema');
-            if (db) db.ref('configuracion/version').set(input.value.trim());
-        }
+			if (localStorage.getItem('sesion_usuario_activa') === 'true') {
+			conectarFirebase();
+			}
+			}
 
-        function activarInterfazAdmin() {
-            modoAdminActivo = true;
-            
-            document.documentElement.style.setProperty('--w-player', '1.3fr');
-            document.documentElement.style.setProperty('--w-modif', '0.6fr');
-            document.documentElement.style.setProperty('--w-modif-perf', '0.6fr');
-            document.documentElement.style.setProperty('--w-add-tracks', '0.8fr');
-            document.documentElement.style.setProperty('--w-add-pts', '0.8fr');
-            document.documentElement.style.setProperty('--gap-admin', '4px');
-            
-            contenedorMarcador.classList.add('admin-visible');
-            
-            btnCandado.classList.add('activo');
-            textoCandado.innerText = "Cerrar Admin";
-            panelGestionRoot.style.display = "block";
-        }
+			function conectarFirebase() {
+			db.ref('jugadores').on('value', (snapshot) => {
+			const datos = snapshot.val();
+			if (datos) {
+			jugadores = Object.keys(datos).map(key => ({
+			firebaseKey: key,
+			...datos[key]
+			}));
+			} else {
+			jugadores = [];
+			}
+			actualizarSelectsAdmin();
+			renderTabla();
+			});
+			}
 
-        function conmutarModoAdmin() {
-            if (!modoAdminActivo) {
-                const intento = prompt("Introduce la contraseña de administrador:");
-                if (intento === CLAVE_SECRETA_ADMIN) {
-                    activarInterfazAdmin();
-                } else if (intento !== null) {
-                    alert("Contraseña incorrecta.");
-                }
-            } else {
-                modoAdminActivo = false;
-                
-                document.documentElement.style.setProperty('--w-player', '2.2fr');
-                document.documentElement.style.setProperty('--w-modif', '0fr');
-                document.documentElement.style.setProperty('--w-modif-perf', '0fr');
-                document.documentElement.style.setProperty('--w-add-tracks', '0fr');
-                document.documentElement.style.setProperty('--w-add-pts', '0fr');
-                document.documentElement.style.setProperty('--gap-admin', '0px');
-                
-                contenedorMarcador.classList.remove('admin-visible');
-                
-                btnCandado.classList.remove('activo');
-                textoCandado.innerText = "Administrar";
-                panelGestionRoot.style.display = "none";
-                panelGestionRoot.removeAttribute("open");
-            }
-        }
+			function guardarAvatar() {
+			const key = document.getElementById('select-avatar').value;
+			const url = document.getElementById('input-avatar-url').value.trim();
+			if(!key || !db) return;
 
-        function procesarCambioContrasena() {
-            const tipo = document.getElementById('tipo-clave-cambiar').value;
-            const nuevaClave = document.getElementById('nueva-clave-valor').value.trim();
-            const verificacionAdmin = document.getElementById('confirmar-admin-actual').value;
+			db.ref('jugadores/' + key + '/avatar').set(url).then(() => {
+			alert("¡Foto de perfil actualizada con éxito!");
+			document.getElementById('input-avatar-url').value = '';
+			});
+			}
 
-            if (nuevaClave === "") {
-                alert("La nueva contraseña no puede estar vacía.");
-                return;
-            }
+			function agregarCancion() {
+			const titulo = document.getElementById('nueva-cancion-titulo').value.trim();
+			const creador = document.getElementById('nueva-cancion-creador').value.trim();
+			const url = document.getElementById('nueva-cancion-url').value.trim();
 
-            if (verificacionAdmin !== CLAVE_SECRETA_ADMIN) {
-                alert("Error: La 'Contraseña Admin Actual' ingresada es incorrecta.");
-                return;
-            }
+			if(!titulo || !creador || !url) {
+			alert("Por favor rellena el título, creador y la ruta (Ej: musicmenu/menu_4.mp3)");
+			return;
+			}
 
-            const nodoDestino = tipo === 'crew' ? 'configuracion/claves/crew' : 'configuracion/claves/admin';
-            
-            db.ref(nodoDestino).set(nuevaClave)
-                .then(() => {
-                    alert(`¡Cambio exitoso! Clave de ${tipo === 'crew' ? 'Entrada Crew' : 'Administrador'} actualizada.`);
-                    document.getElementById('nueva-clave-valor').value = "";
-                    document.getElementById('confirmar-admin-actual').value = "";
-                })
-                .catch((err) => {
-                    alert("Error al guardar en Firebase.");
-                });
-        }
+			const nuevaPista = { title: titulo, creator: creador, url: url };
+			if (db) {
+			db.ref('configuracion/playlist').push(nuevaPista).then(() => {
+			document.getElementById('nueva-cancion-titulo').value = '';
+			document.getElementById('nueva-cancion-creador').value = '';
+			document.getElementById('nueva-cancion-url').value = '';
+			alert("¡Pista musical añadida al catálogo!");
+			});
+			}
+			}
 
-        function mandarANube(jugador) {
-            if(jugador.firebaseKey && db) {
-                db.ref('jugadores/' + jugador.firebaseKey).set({
-                    id: jugador.id,
-                    nombre: jugador.nombre,
-                    avatar: jugador.avatar || "",
-                    copas: jugador.copas,
-                    perfectos: jugador.perfectos || 0,
-                    carreras: jugador.carreras,
-                    carreraTotal: jugador.carreraTotal
-                });
-            }
-        }
+			function guardarCopasSistema() {
+			const input = document.getElementById('input-copas-sistema');
+			if (db) db.ref('configuracion/copas_actuales').set(input.value.trim());
+			}
 
-        function actualizarSelectsAdmin() {
-            if (!selectEliminar || !selectAvatar) return;
-            selectEliminar.innerHTML = '<option value="" disabled selected>Selecciona un corredor...</option>';
-            selectAvatar.innerHTML = '<option value="" disabled selected>Selecciona un corredor...</option>';
-            
-            const copiaAlfabetica = [...jugadores].sort((a, b) => a.nombre.localeCompare(b.nombre));
-            copiaAlfabetica.forEach(j => {
-                const opt1 = document.createElement('option');
-                opt1.value = j.firebaseKey;
-                opt1.textContent = j.nombre;
-                selectEliminar.appendChild(opt1);
-                
-                const opt2 = document.createElement('option');
-                opt2.value = j.firebaseKey;
-                opt2.textContent = j.nombre;
-                selectAvatar.appendChild(opt2);
-            });
-        }
+			function guardarEmpatesSistema() {
+			const input = document.getElementById('input-empates-sistema');
+			if (db) db.ref('configuracion/empates').set(input.value.trim());
+			}
 
-        function renderTabla() {
-            const posicionesViejas = {};
-            jugadores.forEach(j => {
-                const el = document.getElementById(`jugador-${j.id}`);
-                if (el) posicionesViejas[j.id] = el.getBoundingClientRect().top;
-            });
+			function guardarVersionSistema() {
+			const input = document.getElementById('input-version-sistema');
+			if (db) db.ref('configuracion/version').set(input.value.trim());
+			}
 
-            // DESEMPATE: Copas > Perfectos > Puntos
-            jugadores.sort((a, b) => {
-                if (b.copas !== a.copas) return b.copas - a.copas;
-                if ((b.perfectos || 0) !== (a.perfectos || 0)) return (b.perfectos || 0) - (a.perfectos || 0);
-                return b.carreraTotal - a.carreraTotal;
-            });
+			function activarInterfazAdmin() {
+			modoAdminActivo = true;
 
-            tablaBody.innerHTML = "";
-            const totalJugadores = jugadores.length;
+			document.documentElement.style.setProperty('--w-player', '1.3fr');
+			document.documentElement.style.setProperty('--w-modif', '0.6fr');
+			document.documentElement.style.setProperty('--w-modif-perf', '0.6fr');
+			document.documentElement.style.setProperty('--w-add-tracks', '0.8fr');
+			document.documentElement.style.setProperty('--w-add-pts', '0.8fr');
+			document.documentElement.style.setProperty('--gap-admin', '4px');
 
-            if (totalJugadores === 0) {
-                tablaBody.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No hay corredores en la pista. Activa el Modo Admin para registrar a la crew.</div>`;
-                return;
-            }
+			contenedorMarcador.classList.add('admin-visible');
 
-            jugadores.forEach((jugador, indice) => {
-                let clasePuesto = "puesto-normal";
-                if (indice === 0) clasePuesto = "puesto-1";
-                else if (indice === 1) clasePuesto = "puesto-2";
-                else if (indice === 2) clasePuesto = "puesto-3";
+			btnCandado.classList.add('activo');
+			textoCandado.innerText = "Cerrar Admin";
+			panelGestionRoot.style.display = "block";
+			}
 
-                const promedio = jugador.carreras > 0 ? (jugador.carreraTotal / jugador.carreras).toFixed(1) : "0.0";
-                
-                // Si el jugador tiene avatar registrado, crea el elemento HTML de fondo
-                let avatarBgHtml = "";
-                if (jugador.avatar) {
-                    avatarBgHtml = `
-                        <div class="avatar-bg-container">
-                            <img src="${jugador.avatar}" alt="Avatar">
-                            <div class="overlay-degradado"></div>
-                        </div>
-                    `;
-                }
+			function conmutarModoAdmin() {
+			if (!modoAdminActivo) {
+			const intento = prompt("Introduce la contraseña de administrador:");
+			if (intento === CLAVE_SECRETA_ADMIN) {
+			activarInterfazAdmin();
+			} else if (intento !== null) {
+			alert("Contraseña incorrecta.");
+			}
+			} else {
+			modoAdminActivo = false;
 
-                const fila = document.createElement('div');
-                fila.id = `jugador-${jugador.id}`;
-                fila.className = `fila-jugador ${clasePuesto}`;
-                
-                fila.innerHTML = `
-                    ${avatarBgHtml}
-                    <div class="posicion">#${indice + 1}</div>
-                    
-                    <div class="nombre" title="${jugador.nombre}">${jugador.nombre}</div>
+			document.documentElement.style.setProperty('--w-player', '2.2fr');
+			document.documentElement.style.setProperty('--w-modif', '0fr');
+			document.documentElement.style.setProperty('--w-modif-perf', '0fr');
+			document.documentElement.style.setProperty('--w-add-tracks', '0fr');
+			document.documentElement.style.setProperty('--w-add-pts', '0fr');
+			document.documentElement.style.setProperty('--gap-admin', '0px');
 
-                    <div class="puntos-copas">${jugador.copas}</div>
-                    
-                    <div class="control-valores col-admin">
-                        <button class="btn-accion btn-mas" onclick="modificarCopas('${jugador.firebaseKey}', 1)">+</button>
-                        <button class="btn-accion btn-menos" onclick="modificarCopas('${jugador.firebaseKey}', -1)">-</button>
-                    </div>
+			contenedorMarcador.classList.remove('admin-visible');
 
-                    <div class="puntos-copas" style="color: #f1c40f; text-shadow: 0 0 5px rgba(241,196,15,0.4);">${jugador.perfectos || 0}</div>
-                    
-                    <div class="control-valores col-admin">
-                        <button class="btn-accion btn-mas" onclick="modificarPerfectos('${jugador.firebaseKey}', 1)">+</button>
-                        <button class="btn-accion btn-menos" onclick="modificarPerfectos('${jugador.firebaseKey}', -1)">-</button>
-                    </div>
-                    
-                    <div class="total-carreras-num">${jugador.carreras}</div>
-                    <div class="pts-promedio">${promedio}</div>
-                    <div class="total-carrera">${jugador.carreraTotal} pts</div>
-                    
-                    <div class="col-admin">
-                        <input type="number" id="race-${jugador.id}" class="input-sumar-carrera race-input" placeholder="+ tracks"
-                               onkeydown="chequearEnterRace(event, ${jugador.id})" onblur="procesarSumaCarreras('${jugador.firebaseKey}', ${jugador.id})">
-                    </div>
-                    
-                    <div class="col-admin">
-                        <input type="number" id="add-${jugador.id}" class="input-sumar-carrera" placeholder="+ pts"
-                               onkeydown="chequearEnter(event, ${jugador.id})" onblur="procesarSuma('${jugador.firebaseKey}', ${jugador.id})">
-                    </div>
-                `;
-                tablaBody.appendChild(fila);
-            });
+			btnCandado.classList.remove('activo');
+			textoCandado.innerText = "Administrar";
+			panelGestionRoot.style.display = "none";
+			panelGestionRoot.removeAttribute("open");
+			}
+			}
 
-            jugadores.forEach(j => {
-                const el = document.getElementById(`jugador-${j.id}`);
-                const posVieja = posicionesViejas[j.id];
-                if (el && posVieja !== undefined) {
-                    const posNueva = el.getBoundingClientRect().top;
-                    const diferenciaY = posVieja - posNueva;
-                    if (diferenciaY !== 0) {
-                        el.style.transform = `translateY(${diferenciaY}px)`;
-                        el.style.transition = 'none';
-                        el.offsetHeight; 
-                        el.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                        el.style.transform = 'translateY(0)';
-                    }
-                }
-            });
-        }
+			function procesarCambioContrasena() {
+			const tipo = document.getElementById('tipo-clave-cambiar').value;
+			const nuevaClave = document.getElementById('nueva-clave-valor').value.trim();
+			const verificacionAdmin = document.getElementById('confirmar-admin-actual').value;
 
-        function modificarCopas(firebaseKey, width) {
-            const j = jugadores.find(x => x.firebaseKey === firebaseKey);
-            if (j && db) {
-                j.copas = Math.max(0, j.copas + width);
-                mandarANube(j);
-            }
-        }
+			if (nuevaClave === "") {
+			alert("La nueva contraseña no puede estar vacía.");
+			return;
+			}
 
-        function modificarPerfectos(firebaseKey, width) {
-            const j = jugadores.find(x => x.firebaseKey === firebaseKey);
-            if (j && db) {
-                j.perfectos = Math.max(0, (j.perfectos || 0) + width);
-                mandarANube(j);
-            }
-        }
+			if (verificacionAdmin !== CLAVE_SECRETA_ADMIN) {
+			alert("Error: La 'Contraseña Admin Actual' ingresada es incorrecta.");
+			return;
+			}
 
-        function chequearEnterRace(event, id) {
-            if (event.key === 'Enter') document.getElementById(`race-${id}`).blur();
-        }
+			const nodoDestino = tipo === 'crew' ? 'configuracion/claves/crew' : 'configuracion/claves/admin';
 
-        function procesarSumaCarreras(firebaseKey, id) {
-            const input = document.getElementById(`race-${id}`);
-            if (!input || input.value === "") return;
-            const valor = parseInt(input.value);
-            input.value = "";
+			db.ref(nodoDestino).set(nuevaClave)
+			.then(() => {
+			alert(`¡Cambio exitoso! Clave de ${tipo === 'crew' ? 'Entrada Crew' : 'Administrador'} actualizada.`);
+			document.getElementById('nueva-clave-valor').value = "";
+			document.getElementById('confirmar-admin-actual').value = "";
+			})
+			.catch((err) => {
+			alert("Error al guardar en Firebase.");
+			});
+			}
 
-            if (!isNaN(valor) && valor !== 0) {
-                const j = jugadores.find(x => x.firebaseKey === firebaseKey);
-                if (j) {
-                    j.carreras = Math.max(0, j.carreras + valor);
-                    mandarANube(j);
-                }
-            }
-        }
+			function mandarANube(jugador) {
+			if(jugador.firebaseKey && db) {
+			db.ref('jugadores/' + jugador.firebaseKey).set({
+			id: jugador.id,
+			nombre: jugador.nombre,
+			avatar: jugador.avatar || "",
+			copas: jugador.copas,
+			perfectos: jugador.perfectos || 0,
+			carreras: jugador.carreras,
+			carreraTotal: jugador.carreraTotal
+			});
+			}
+			}
 
-        function chequearEnter(event, id) {
-            if (event.key === 'Enter') document.getElementById(`add-${id}`).blur();
-        }
+			function actualizarSelectsAdmin() {
+			if (!selectEliminar || !selectAvatar) return;
+			selectEliminar.innerHTML = '<option value="" disabled="" selected="">Selecciona un corredor...</option>';
+			selectAvatar.innerHTML = '<option value="" disabled="" selected="">Selecciona un corredor...</option>';
 
-        function procesarSuma(firebaseKey, id) {
-            const input = document.getElementById(`add-${id}`);
-            if (!input || input.value === "") return;
-            const valor = parseInt(input.value);
-            input.value = "";
+			const copiaAlfabetica = [...jugadores].sort((a, b) => a.nombre.localeCompare(b.nombre));
+			copiaAlfabetica.forEach(j => {
+			const opt1 = document.createElement('option');
+			opt1.value = j.firebaseKey;
+			opt1.textContent = j.nombre;
+			selectEliminar.appendChild(opt1);
 
-            if (!isNaN(valor) && valor !== 0) {
-                const j = jugadores.find(x => x.firebaseKey === firebaseKey);
-                if (j) {
-                    j.carreraTotal = Math.max(0, j.carreraTotal + valor);
-                    mandarANube(j);
-                }
-            }
-        }
+			const opt2 = document.createElement('option');
+			opt2.value = j.firebaseKey;
+			opt2.textContent = j.nombre;
+			selectAvatar.appendChild(opt2);
+			});
+			}
 
-        function agregarJugador() {
-            const input = document.getElementById('nuevo-nombre');
-            const nombre = input.value.trim().toUpperCase();
-            if (nombre === "" || jugadores.some(j => j.nombre === nombre) || !db) return;
+			function renderTabla() {
+			const posicionesViejas = {};
+			jugadores.forEach(j => {
+			const el = document.getElementById(`jugador-${j.id}`);
+			if (el) posicionesViejas[j.id] = el.getBoundingClientRect().top;
+			});
 
-            const nuevoCorredor = {
-                id: Date.now(),
-                nombre: nombre,
-                avatar: "",
-                copas: 0,
-                perfectos: 0,
-                carreras: 0,
-                carreraTotal: 0
-            };
+			// DESEMPATE: Copas > Perfectos > Puntos
+			jugadores.sort((a, b) => {
+			if (b.copas !== a.copas) return b.copas - a.copas;
+			if ((b.perfectos || 0) !== (a.perfectos || 0)) return (b.perfectos || 0) - (a.perfectos || 0);
+			return b.carreraTotal - a.carreraTotal;
+			});
 
-            db.ref('jugadores').push(nuevoCorredor).then(() => {
-                input.value = "";
-            });
-        }
+			tablaBody.innerHTML = "";
+			const totalJugadores = jugadores.length;
 
-        function eliminarJugador() {
-            const key = selectEliminar.value;
-            if (!key || !db) return;
-            const j = jugadores.find(x => x.firebaseKey === key);
-            if (confirm(`¿Seguro que quieres eliminar a ${j.nombre}?`)) {
-                db.ref('jugadores/' + key).remove();
-            }
-        }
+			if (totalJugadores === 0) {
+			tablaBody.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No hay corredores en la pista. Activa el Modo Admin para registrar a la crew.</div>`;
+			return;
+			}
 
-        function reiniciarTabla() {
-            if (confirm("¿Restablecer marcadores de todos a cero?")) {
-                jugadores.forEach(j => {
-                    j.copas = 0;
-                    j.perfectos = 0;
-                    j.carreras = 0;
-                    j.carreraTotal = 0;
-                    mandarANube(j);
-                });
-            }
-        }
-    </script>
-</body>
+			jugadores.forEach((jugador, indice) => {
+			let clasePuesto = "puesto-normal";
+			if (indice === 0) clasePuesto = "puesto-1";
+			else if (indice === 1) clasePuesto = "puesto-2";
+			else if (indice === 2) clasePuesto = "puesto-3";
+
+			const promedio = jugador.carreras > 0 ? (jugador.carreraTotal / jugador.carreras).toFixed(1) : "0.0";
+
+			let avatarBgHtml = "";
+			if (jugador.avatar) {
+			avatarBgHtml = `
+			<div class="avatar-bg-container">
+				<img src="${jugador.avatar}" alt="Avatar">
+					<div class="overlay-degradado"></div>
+				</div>
+			`;
+			}
+
+			const fila = document.createElement('div');
+			fila.id = `jugador-${jugador.id}`;
+			fila.className = `fila-jugador ${clasePuesto}`;
+
+			fila.innerHTML = `
+			${avatarBgHtml}
+			<div class="posicion">#${indice + 1}</div>
+
+			<div class="nombre" title="${jugador.nombre}">${jugador.nombre}</div>
+
+			<div class="puntos-copas">${jugador.copas}</div>
+
+			<div class="control-valores col-admin">
+				<button class="btn-accion btn-mas" onclick="modificarCopas('${jugador.firebaseKey}', 1)">+</button>
+				<button class="btn-accion btn-menos" onclick="modificarCopas('${jugador.firebaseKey}', -1)">-</button>
+			</div>
+
+			<div class="puntos-copas" style="color: #f1c40f; text-shadow: 0 0 5px rgba(241,196,15,0.4);">${jugador.perfectos || 0}</div>
+
+			<div class="control-valores col-admin">
+				<button class="btn-accion btn-mas" onclick="modificarPerfectos('${jugador.firebaseKey}', 1)">+</button>
+				<button class="btn-accion btn-menos" onclick="modificarPerfectos('${jugador.firebaseKey}', -1)">-</button>
+			</div>
+
+			<div class="total-carreras-num">${jugador.carreras}</div>
+			<div class="pts-promedio">${promedio}</div>
+			<div class="total-carrera">${jugador.carreraTotal} pts</div>
+
+			<div class="col-admin">
+				<input type="number" id="race-${jugador.id}" class="input-sumar-carrera race-input" placeholder="+ tracks"
+					   onkeydown="chequearEnterRace(event, ${jugador.id})" onblur="procesarSumaCarreras('${jugador.firebaseKey}', ${jugador.id})">
+				</div>
+
+			<div class="col-admin">
+				<input type="number" id="add-${jugador.id}" class="input-sumar-carrera" placeholder="+ pts"
+					   onkeydown="chequearEnter(event, ${jugador.id})" onblur="procesarSuma('${jugador.firebaseKey}', ${jugador.id})">
+				</div>
+			`;
+			tablaBody.appendChild(fila);
+			});
+
+			jugadores.forEach(j => {
+			const el = document.getElementById(`jugador-${j.id}`);
+			const posVieja = posicionesViejas[j.id];
+			if (el && posVieja !== undefined) {
+			const posNueva = el.getBoundingClientRect().top;
+			const diferenciaY = posVieja - posNueva;
+			if (diferenciaY !== 0) {
+			el.style.transform = `translateY(${diferenciaY}px)`;
+			el.style.transition = 'none';
+			el.offsetHeight;
+			el.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+			el.style.transform = 'translateY(0)';
+			}
+			}
+			});
+			}
+
+			function modificarCopas(firebaseKey, width) {
+			const j = jugadores.find(x => x.firebaseKey === firebaseKey);
+			if (j && db) {
+			j.copas = Math.max(0, j.copas + width);
+			mandarANube(j);
+			}
+			}
+
+			function modificarPerfectos(firebaseKey, width) {
+			const j = jugadores.find(x => x.firebaseKey === firebaseKey);
+			if (j && db) {
+			j.perfectos = Math.max(0, (j.perfectos || 0) + width);
+			mandarANube(j);
+			}
+			}
+
+			function chequearEnterRace(event, id) {
+			if (event.key === 'Enter') document.getElementById(`race-${id}`).blur();
+			}
+
+			function procesarSumaCarreras(firebaseKey, id) {
+			const input = document.getElementById(`race-${id}`);
+			if (!input || input.value === "") return;
+			const valor = parseInt(input.value);
+			input.value = "";
+
+			if (!isNaN(valor) && valor !== 0) {
+			const j = jugadores.find(x => x.firebaseKey === firebaseKey);
+			if (j) {
+			j.carreras = Math.max(0, j.carreras + valor);
+			mandarANube(j);
+			}
+			}
+			}
+
+			function chequearEnter(event, id) {
+			if (event.key === 'Enter') document.getElementById(`add-${id}`).blur();
+			}
+
+			function procesarSuma(firebaseKey, id) {
+			const input = document.getElementById(`add-${id}`);
+			if (!input || input.value === "") return;
+			const valor = parseInt(input.value);
+			input.value = "";
+
+			if (!isNaN(valor) && valor !== 0) {
+			const j = jugadores.find(x => x.firebaseKey === firebaseKey);
+			if (j) {
+			j.carreraTotal = Math.max(0, j.carreraTotal + valor);
+			mandarANube(j);
+			}
+			}
+			}
+
+			function agregarJugador() {
+			const input = document.getElementById('nuevo-nombre');
+			const nombre = input.value.trim().toUpperCase();
+			if (nombre === "" || jugadores.some(j => j.nombre === nombre) || !db) return;
+
+			const nuevoCorredor = {
+			id: Date.now(),
+			nombre: nombre,
+			avatar: "",
+			copas: 0,
+			perfectos: 0,
+			carreras: 0,
+			carreraTotal: 0
+			};
+
+			db.ref('jugadores').push(nuevoCorredor).then(() => {
+			input.value = "";
+			});
+			}
+
+			function eliminarJugador() {
+			const key = selectEliminar.value;
+			if (!key || !db) return;
+			const j = jugadores.find(x => x.firebaseKey === key);
+			if (confirm(`¿Seguro que quieres eliminar a ${j.nombre}?`)) {
+			db.ref('jugadores/' + key).remove();
+			}
+			}
+
+			function reiniciarTabla() {
+			if (confirm("¿Restablecer marcadores de todos a cero?")) {
+			jugadores.forEach(j => {
+			j.copas = 0;
+			j.perfectos = 0;
+			j.carreras = 0;
+			j.carreraTotal = 0;
+			mandarANube(j);
+			});
+			}
+			}
+		</script>
+	</body>
 </html>
 ``` :3 ```
