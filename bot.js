@@ -57,7 +57,7 @@ function conectarFirebaseConDiscord() {
                 estaProcesando = false;
                 if (browser) try { await browser.close(); } catch(e) {}
             }
-        }, 26000);
+        }, 60000); // <-- 60 segundos de límite
 
         try {
             // ARGUMENTOS OBLIGATORIOS PARA EL NAVEGADOR EN INTERNET (RENDER)
