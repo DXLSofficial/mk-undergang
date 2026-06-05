@@ -146,7 +146,7 @@
 						color: #ff9f43;
 						text-shadow: 0 0 8px rgba(255, 159, 67, 0.4);
 						letter-spacing: 1px;
-						position: relative; /* Para alinear los empates a la derecha */
+						position: relative;
 						}
 
 						.caja-empates {
@@ -304,24 +304,40 @@
 						color: #fff;
 						}
 
-						/* CONTROLES DE MÚSICA AL FONDO */
+						/* REPRODUCTOR DE MÚSICA AVANZADO */
 						.controles-audio {
 						margin-top: 40px;
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						gap: 15px;
-						background: rgba(30, 30, 36, 0.7);
-						padding: 10px 20px;
-						border-radius: 30px;
-						border: 1px solid #333;
-						box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+						gap: 12px;
+						background: rgba(30, 30, 36, 0.85);
+						padding: 12px 25px;
+						border-radius: 40px;
+						border: 1px solid #444;
+						box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+						backdrop-filter: blur(8px);
 						}
-						#btn-mute {
-						background: transparent; border: none; font-size: 1.4rem; cursor: pointer; color: white; transition: 0.2s;
+						.btn-track {
+						background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: white; transition: transform 0.1s;
 						}
+						.btn-track:hover { transform: scale(1.15); }
+						.btn-track:active { transform: scale(0.9); }
+						#btn-mute { background: transparent; border: none; font-size: 1.2rem; cursor: pointer; color: white; transition: 0.2s; margin-left: 10px; }
 						#btn-mute:hover { transform: scale(1.1); }
-						#volumen-music { cursor: pointer; accent-color: #4af; }
+						#volumen-music { cursor: pointer; accent-color: #4af; width: 80px; }
+
+						.info-track {
+						display: flex;
+						flex-direction: column;
+						margin-left: 15px;
+						width: 180px;
+						overflow: hidden;
+						border-left: 1px solid #555;
+						padding-left: 15px;
+						}
+						.info-track marquee { font-weight: bold; font-size: 0.95rem; color: #fff; }
+						.track-creator { font-size: 0.75rem; color: #aaa; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
 
 						/* CRÉDITOS FOOTER */
 						.footer-creditos {
@@ -378,12 +394,19 @@
 				<div id="tabla-body" class="tabla-animada"></div>
 			</div>
 
-			<!-- CONTROLES DE MÚSICA AL FONDO DE LA PÁGINA -->
-			<audio id="bg-music" src="miimaker.mp3" loop="" preload="auto"></audio>
+			<!-- REPRODUCTOR DE MÚSICA CON CATÁLOGO -->
+			<audio id="bg-music" preload="auto"></audio>
 			<div class="controles-audio">
+				<button class="btn-track" onclick="prevTrack()">⏮️</button>
+				<button id="btn-play" class="btn-track" onclick="togglePlay()">▶️</button>
+				<button class="btn-track" onclick="nextTrack()">⏭️</button>
 				<button id="btn-mute" onclick="toggleMute()">🔊</button>
 				<input type="range" id="volumen-music" min="0" max="1" step="0.01" value="0.3" oninput="cambiarVolumen()">
-        </div>
+					<div class="info-track">
+						<marquee id="track-name" scrollamount="4">Cargando pistas...</marquee>
+						<div id="track-creator" class="track-creator">---</div>
+					</div>
+				</div>
 
 			<details class="admin-detalles" id="panel-gestion-root">
 				<summary class="admin-summary">⚙️ Panel de Gestión</summary>
@@ -410,7 +433,15 @@
 						<input type="number" id="input-empates-sistema" class="admin-input" placeholder="Ej: 2" onblur="guardarEmpatesSistema()">
                 </div>
 
-					<!-- NUEVA CAJA PARA MODIFICAR LA VERSIÓN -->
+					<!-- NUEVA CAJA PARA AÑADIR CANCIONES AL CATÁLOGO -->
+					<div class="admin-box" style="border: 1px dashed #9b59b6; padding: 15px; border-radius: 8px;">
+						<h3 style="color: #c39bd3;">🎵 Añadir Canción</h3>
+						<input type="text" id="nueva-cancion-titulo" class="admin-input" placeholder="Título (Ej: N64 Rainbow Road)">
+							<input type="text" id="nueva-cancion-creador" class="admin-input" placeholder="Creador (Ej: Nintendo)">
+								<input type="text" id="nueva-cancion-url" class="admin-input" placeholder="Ruta (Ej: musicmenu/menu_4.mp3)">
+									<button class="btn-admin btn-add" style="margin-top: 5px;" onclick="agregarCancion()">➕ Añadir Pista</button>
+								</div>
+
 					<div class="admin-box" style="border: 1px dashed #7f8fa6; padding: 15px; border-radius: 8px;">
 						<h3 style="color: #a4b0be;">🏷️ Versión del Sistema</h3>
 						<input type="text" id="input-version-sistema" class="admin-input" placeholder="Ej: 1.1.0" onblur="guardarVersionSistema()">
@@ -433,7 +464,6 @@
 				</div>
 			</details>
 
-			<!-- CRÉDITOS AL FINAL -->
 			<div class="footer-creditos">
 				hecha por DexallStart. v<span id="version-vista">1.1.0</span>
 			</div>
@@ -447,11 +477,49 @@
 			let CLAVE_CREW_SISTEMA = "mario-crew-2026";
 			let CLAVE_SECRETA_ADMIN = "enerbelaskn25";
 
+			// LÓGICA DEL REPRODUCTOR MUSICAL Y CATÁLOGO
 			const musica = document.getElementById('bg-music');
-			musica.volume = 0.3; // Volumen por defecto
+			musica.volume = 0.3;
 
-			function iniciarMusica() {
-			musica.play().catch(e => console.log("Autoplay de audio bloqueado por el navegador, requiere interacción manual."));
+			let playlist = [];
+			let currentTrackIndex = 0;
+
+			function cargarCancion(index) {
+			if (playlist.length === 0) return;
+			currentTrackIndex = index;
+			const pista = playlist[currentTrackIndex];
+			musica.src = pista.url;
+			document.getElementById('track-name').innerText = pista.title;
+			document.getElementById('track-creator').innerText = pista.creator;
+			}
+
+			// Si la canción termina, pasa a la siguiente automáticamente
+			musica.addEventListener('ended', nextTrack);
+
+			function togglePlay() {
+			if (musica.paused) {
+			musica.play().catch(e => console.log("Interacción requerida"));
+			document.getElementById('btn-play').innerText = '⏸️';
+			} else {
+			musica.pause();
+			document.getElementById('btn-play').innerText = '▶️';
+			}
+			}
+
+			function nextTrack() {
+			if (playlist.length === 0) return;
+			currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+			cargarCancion(currentTrackIndex);
+			musica.play();
+			document.getElementById('btn-play').innerText = '⏸️';
+			}
+
+			function prevTrack() {
+			if (playlist.length === 0) return;
+			currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+			cargarCancion(currentTrackIndex);
+			musica.play();
+			document.getElementById('btn-play').innerText = '⏸️';
 			}
 
 			function toggleMute() {
@@ -484,8 +552,13 @@
 			window.addEventListener('DOMContentLoaded', () => {
 			desvanecerBloqueo();
 			inicializarTodo();
-			// Intento de reproducir música en carga automática
-			document.body.addEventListener('click', () => { if(musica.paused) musica.play(); }, { once: true });
+			// Reproduce automáticamente tras el primer clic en la pantalla
+			document.body.addEventListener('click', () => {
+			if(musica.paused && playlist.length > 0) {
+			musica.play();
+			document.getElementById('btn-play').innerText = '⏸️';
+			}
+			}, { once: true });
 			});
 			} else {
 			window.addEventListener('DOMContentLoaded', () => {
@@ -499,7 +572,10 @@
 			localStorage.setItem('sesion_usuario_activa', 'true');
 			desvanecerBloqueo();
 			conectarFirebase();
-			iniciarMusica(); // Inicia la música al darle clic al botón
+			if (playlist.length > 0) {
+			musica.play();
+			document.getElementById('btn-play').innerText = '⏸️';
+			}
 			} else {
 			alert("Contraseña incorrecta. Acceso denegado.");
 			input.value = "";
@@ -534,6 +610,29 @@
 			}
 			db = firebase.database();
 
+			// SINCRONIZAR PLAYLIST CON FIREBASE
+			db.ref('configuracion/playlist').on('value', (snapshot) => {
+			const data = snapshot.val();
+			if (data) {
+			playlist = Object.keys(data).map(key => data[key]);
+			} else {
+			// Si no hay lista en Firebase, carga el catálogo inicial
+			playlist = [
+			{ url: 'musicmenu/menu_0.mp3', title: 'Mii Maker (Wii U)', creator: 'Nintendo' },
+			{ url: 'musicmenu/menu_1.mp3', title: 'Electrodome', creator: 'Nintendo' },
+			{ url: 'musicmenu/menu_2.mp3', title: 'Stickerbrush Symphony', creator: 'David Wise' },
+			{ url: 'musicmenu/menu_3.mp3', title: 'Cheese Land', creator: 'Nintendo' }
+			];
+			// Lo guarda en la nube para el futuro
+			db.ref('configuracion/playlist').set(playlist);
+			}
+
+			// Carga la primera pista si no estaba sonando nada
+			if(musica.src === "" || musica.src === window.location.href) {
+			cargarCancion(0);
+			}
+			});
+
 			db.ref('configuracion/claves').on('value', (snapshot) => {
 			const data = snapshot.val();
 			if (data) {
@@ -559,7 +658,6 @@
 			if (inputEmpates) inputEmpates.value = empates || 0;
 			});
 
-			// ESCUCHADOR DE LA VERSIÓN
 			db.ref('configuracion/version').on('value', (snapshot) => {
 			const version = snapshot.val() || "1.1.0";
 			document.getElementById('version-vista').innerText = version;
@@ -588,6 +686,27 @@
 			});
 			}
 
+			function agregarCancion() {
+			const titulo = document.getElementById('nueva-cancion-titulo').value.trim();
+			const creador = document.getElementById('nueva-cancion-creador').value.trim();
+			const url = document.getElementById('nueva-cancion-url').value.trim();
+
+			if(!titulo || !creador || !url) {
+			alert("Por favor rellena el título, creador y la ruta (Ej: musicmenu/menu_4.mp3)");
+			return;
+			}
+
+			const nuevaPista = { title: titulo, creator: creador, url: url };
+			if (db) {
+			db.ref('configuracion/playlist').push(nuevaPista).then(() => {
+			document.getElementById('nueva-cancion-titulo').value = '';
+			document.getElementById('nueva-cancion-creador').value = '';
+			document.getElementById('nueva-cancion-url').value = '';
+			alert("¡Pista musical añadida al catálogo!");
+			});
+			}
+			}
+
 			function guardarCopasSistema() {
 			const input = document.getElementById('input-copas-sistema');
 			if (db) db.ref('configuracion/copas_actuales').set(input.value.trim());
@@ -598,7 +717,6 @@
 			if (db) db.ref('configuracion/empates').set(input.value.trim());
 			}
 
-			// FUNCIÓN PARA GUARDAR LA VERSIÓN EN FIREBASE
 			function guardarVersionSistema() {
 			const input = document.getElementById('input-version-sistema');
 			if (db) db.ref('configuracion/version').set(input.value.trim());
@@ -860,4 +978,4 @@
 		</script>
 	</body>
 </html>
-``` :3
+``` :3 ```
