@@ -254,6 +254,49 @@
 						pointer-events: none;
 						}
 
+						/* BANNER DE MEJORES MOMENTOS */
+						.seccion-momentos {
+						margin-top: 15px;
+						background-color: rgba(42, 42, 53, 0.9);
+						border-radius: 8px;
+						border: 2px solid #3498db;
+						overflow: hidden;
+						display: flex;
+						flex-direction: column;
+						width: 100%;
+						box-sizing: border-box;
+						box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+						}
+						.momentos-header {
+						background: linear-gradient(90deg, rgba(52, 152, 219, 0.2), rgba(42, 42, 53, 0));
+						padding: 10px 15px;
+						font-weight: bold;
+						color: #74b9ff;
+						text-transform: uppercase;
+						font-size: 0.95rem;
+						border-bottom: 1px solid rgba(52, 152, 219, 0.3);
+						text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+						display: flex;
+						align-items: center;
+						gap: 8px;
+						}
+						.momentos-imagen {
+						width: 100%;
+						height: auto;
+						max-height: 400px;
+						object-fit: cover;
+						object-position: center;
+						}
+						.momentos-texto {
+						padding: 12px 15px;
+						text-align: center;
+						color: #eee;
+						font-style: italic;
+						font-size: 1.05rem;
+						background-color: rgba(30, 30, 36, 0.85);
+						border-top: 1px solid rgba(255,255,255,0.05);
+						}
+
 						.col-admin {
 						opacity: 0;
 						visibility: hidden;
@@ -440,6 +483,13 @@
 				</div>
 
 				<div id="tabla-body" class="tabla-animada"></div>
+
+				<!-- SECCIÓN DE MEJORES MOMENTOS (Oculta por defecto) -->
+				<div id="seccion-momentos" class="seccion-momentos" style="display: none;">
+					<div class="momentos-header">📸 Mejores Momentos</div>
+					<img id="img-momento-actual" class="momentos-imagen" src="" alt="Mejor Momento">
+						<div id="texto-momento-actual" class="momentos-texto"></div>
+					</div>
 			</div>
 
 			<!-- REPRODUCTOR DE MÚSICA CON CATÁLOGO -->
@@ -489,6 +539,15 @@
 						<input type="number" id="input-empates-sistema" class="admin-input" placeholder="Ej: 2" onblur="guardarEmpatesSistema()">
                 </div>
 
+					<!-- CAJA PARA AÑADIR MEJORES MOMENTOS -->
+					<div class="admin-box" style="border: 1px dashed #f39c12; padding: 15px; border-radius: 8px;">
+						<h3 style="color: #f39c12;">📸 Mejores Momentos</h3>
+						<input type="text" id="input-momento-url" class="admin-input" placeholder="Ruta (Ej: fotos/momento1.jpg)">
+							<input type="text" id="input-momento-texto" class="admin-input" placeholder="Descripción del evento...">
+								<button class="btn-admin btn-add" style="margin-top: 5px; background-color: #f39c12;" onclick="guardarMejorMomento()">💾 Publicar Momento</button>
+								<button class="btn-admin btn-remove" style="margin-top: 5px;" onclick="borrarMejorMomento()">🗑️ Ocultar Sección</button>
+							</div>
+
 					<div class="admin-box" style="border: 1px dashed #9b59b6; padding: 15px; border-radius: 8px;">
 						<h3 style="color: #c39bd3;">🎵 Añadir Canción</h3>
 						<input type="text" id="nueva-cancion-titulo" class="admin-input" placeholder="Título (Ej: N64 Rainbow Road)">
@@ -520,7 +579,7 @@
 			</details>
 
 			<div class="footer-creditos">
-				hecha por DexallStart. v<span id="version-vista">1.1.0</span>
+				hecha por DexallStart. v<span id="version-vista">2.5.0</span>
 			</div>
 
 			<button class="btn-login-flotante" id="btn-candado" onclick="conmutarModoAdmin()">
@@ -698,10 +757,38 @@
 			});
 
 			db.ref('configuracion/version').on('value', (snapshot) => {
-			const version = snapshot.val() || "1.1.0";
+			const version = snapshot.val() || "2.5.0";
 			document.getElementById('version-vista').innerText = version;
 			const inputVersion = document.getElementById('input-version-sistema');
 			if (inputVersion) inputVersion.value = version;
+			});
+
+			// ESCUCHADOR DE MEJORES MOMENTOS
+			db.ref('configuracion/mejor_momento').on('value', (snapshot) => {
+			const data = snapshot.val();
+			const containerMomentos = document.getElementById('seccion-momentos');
+			const imgMomento = document.getElementById('img-momento-actual');
+			const txtMomento = document.getElementById('texto-momento-actual');
+
+			if (data && data.url) {
+			imgMomento.src = data.url;
+
+			if (data.texto && data.texto.trim() !== "") {
+			txtMomento.innerText = data.texto;
+			txtMomento.style.display = "block";
+			} else {
+			txtMomento.style.display = "none";
+			}
+
+			containerMomentos.style.display = 'flex';
+
+			const inputUrl = document.getElementById('input-momento-url');
+			const inputText = document.getElementById('input-momento-texto');
+			if(inputUrl) inputUrl.value = data.url;
+			if(inputText) inputText.value = data.texto || "";
+			} else {
+			containerMomentos.style.display = 'none';
+			}
 			});
 
 			if (localStorage.getItem('sesion_usuario_activa') === 'true') {
@@ -723,6 +810,28 @@
 			actualizarSelectsAdmin();
 			renderTabla();
 			});
+			}
+
+			function guardarMejorMomento() {
+			const url = document.getElementById('input-momento-url').value.trim();
+			const texto = document.getElementById('input-momento-texto').value.trim();
+			if (!url) {
+			alert("Debes poner al menos la ruta de la imagen.");
+			return;
+			}
+			if (db) {
+			db.ref('configuracion/mejor_momento').set({ url: url, texto: texto }).then(() => {
+			alert("¡Mejor momento publicado!");
+			});
+			}
+			}
+
+			function borrarMejorMomento() {
+			if (confirm("¿Estás seguro de que quieres ocultar la sección de mejores momentos?")) {
+			if (db) db.ref('configuracion/mejor_momento').remove();
+			document.getElementById('input-momento-url').value = "";
+			document.getElementById('input-momento-texto').value = "";
+			}
 			}
 
 			function guardarAvatar() {
