@@ -462,7 +462,7 @@
 
 			<div class="container" id="tabla-marcador-contenedor">
 				<div class="header-copa-interna">
-					<span id="marcador-copas-actuales">PARTIDOS: --</span>
+					<span id="marcador-copas-actuales">VICTORIAS: --</span>
 					<div class="caja-empates">
 						DERROTAS: <span id="num-empates-vista">0</span>
 					</div>
@@ -486,7 +486,7 @@
 
 				<!-- SECCIÓN DE MEJORES MOMENTOS (Oculta por defecto) -->
 				<div id="seccion-momentos" class="seccion-momentos" style="display: none;">
-					<div class="momentos-header">📸 Mejores Momentos</div>
+					<div class="momentos-header">Mejores Momentos</div>
 					<img id="img-momento-actual" class="momentos-imagen" src="" alt="Mejor Momento">
 						<div id="texto-momento-actual" class="momentos-texto"></div>
 					</div>
@@ -530,7 +530,7 @@
 						</div>
 
 					<div class="admin-box" style="border: 1px dashed #555; padding: 15px; border-radius: 8px;">
-						<h3 style="color: #4af;">🏆 Definir Copa / Ronda</h3>
+						<h3 style="color: #4af;">0 Definir Victorias</h3>
 						<input type="text" id="input-copas-sistema" class="admin-input" placeholder="Ej: Copa 16" onblur="guardarCopasSistema()">
                 </div>
 
@@ -541,7 +541,7 @@
 
 					<!-- CAJA PARA AÑADIR MEJORES MOMENTOS -->
 					<div class="admin-box" style="border: 1px dashed #f39c12; padding: 15px; border-radius: 8px;">
-						<h3 style="color: #f39c12;">📸 Mejores Momentos</h3>
+						<h3 style="color: #f39c12;">Mejores Momentos</h3>
 						<input type="text" id="input-momento-url" class="admin-input" placeholder="Ruta (Ej: fotos/momento1.jpg)">
 							<input type="text" id="input-momento-texto" class="admin-input" placeholder="Descripción del evento...">
 								<button class="btn-admin btn-add" style="margin-top: 5px; background-color: #f39c12;" onclick="guardarMejorMomento()">💾 Publicar Momento</button>
@@ -549,7 +549,7 @@
 							</div>
 
 					<div class="admin-box" style="border: 1px dashed #9b59b6; padding: 15px; border-radius: 8px;">
-						<h3 style="color: #c39bd3;">🎵 Añadir Canción</h3>
+						<h3 style="color: #c39bd3;">Añadir Canción</h3>
 						<input type="text" id="nueva-cancion-titulo" class="admin-input" placeholder="Título (Ej: N64 Rainbow Road)">
 							<input type="text" id="nueva-cancion-creador" class="admin-input" placeholder="Creador (Ej: Nintendo)">
 								<input type="text" id="nueva-cancion-url" class="admin-input" placeholder="Ruta (Ej: musicmenu/menu_4.mp3)">
@@ -557,7 +557,7 @@
 								</div>
 
 					<div class="admin-box" style="border: 1px dashed #7f8fa6; padding: 15px; border-radius: 8px;">
-						<h3 style="color: #a4b0be;">🏷️ Versión del Sistema</h3>
+						<h3 style="color: #a4b0be;">Versión del Sistema</h3>
 						<input type="text" id="input-version-sistema" class="admin-input" placeholder="Ej: 1.1.0" onblur="guardarVersionSistema()">
                 </div>
 
@@ -588,7 +588,7 @@
 		</div>
 
 		<script>
-			let CLAVE_CREW_SISTEMA = "mario-crew-2026";
+			let CLAVE_CREW_SISTEMA = "striker2026";
 			let CLAVE_SECRETA_ADMIN = "enerbelaskn25";
 
 			const musica = document.getElementById('bg-music');
@@ -742,10 +742,10 @@
 			db.ref('configuracion/copas_actuales').on('value', (snapshot) => {
 			const textoCopas = snapshot.val();
 			if (textoCopas) {
-			marcadorCopas.innerText = `🏁 COPA / RONDA: ${textoCopas}`;
+			marcadorCopas.innerText = `VICTORIAS: ${textoCopas}`;
 			document.getElementById('input-copas-sistema').value = textoCopas;
 			} else {
-			marcadorCopas.innerText = `🏁 COPA / RONDA: --`;
+			marcadorCopas.innerText = `VICTORIAS: --`;
 			}
 			});
 
