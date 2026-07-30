@@ -149,6 +149,21 @@
 						position: relative;
 						}
 
+						/* CAJA DE RACHA (IZQUIERDA) */
+						.caja-racha {
+						position: absolute;
+						left: 15px;
+						top: 50%;
+						transform: translateY(-50%);
+						font-size: 0.9rem;
+						color: #2ecc71;
+						text-shadow: none;
+						background: rgba(0,0,0,0.4);
+						padding: 4px 10px;
+						border-radius: 6px;
+						border: 1px solid rgba(46, 204, 113, 0.3);
+						}
+
 						.caja-empates {
 						position: absolute;
 						right: 15px;
@@ -462,6 +477,9 @@
 
 			<div class="container" id="tabla-marcador-contenedor">
 				<div class="header-copa-interna">
+					<div class="caja-racha">
+						RACHA: <span id="num-racha-vista">0</span>
+					</div>
 					<span id="marcador-copas-actuales">VICTORIAS: --</span>
 					<div class="caja-empates">
 						DERROTAS: <span id="num-empates-vista">0</span>
@@ -528,6 +546,11 @@
 						<input type="text" id="input-avatar-url" class="admin-input" placeholder="Ruta (Ej: profpic/dex.jpg)">
 							<button class="btn-admin btn-add" style="margin-top: 5px; background-color: #3498db;" onclick="guardarAvatar()">💾 Guardar Foto</button>
 						</div>
+
+					<div class="admin-box" style="border: 1px dashed #2ecc71; padding: 15px; border-radius: 8px;">
+						<h3 style="color: #2ecc71;">🔥 Ajustar Racha</h3>
+						<input type="number" id="input-racha-sistema" class="admin-input" placeholder="Ej: 3" onblur="guardarRachaSistema()">
+                </div>
 
 					<div class="admin-box" style="border: 1px dashed #555; padding: 15px; border-radius: 8px;">
 						<h3 style="color: #4af;">0 Definir Victorias</h3>
@@ -749,6 +772,13 @@
 			}
 			});
 
+			db.ref('configuracion/racha').on('value', (snapshot) => {
+			const racha = snapshot.val();
+			document.getElementById('num-racha-vista').innerText = racha || 0;
+			const inputRacha = document.getElementById('input-racha-sistema');
+			if (inputRacha) inputRacha.value = racha || 0;
+			});
+
 			db.ref('configuracion/empates').on('value', (snapshot) => {
 			const empates = snapshot.val();
 			document.getElementById('num-empates-vista').innerText = empates || 0;
@@ -869,6 +899,11 @@
 			function guardarCopasSistema() {
 			const input = document.getElementById('input-copas-sistema');
 			if (db) db.ref('configuracion/copas_actuales').set(input.value.trim());
+			}
+
+			function guardarRachaSistema() {
+			const input = document.getElementById('input-racha-sistema');
+			if (db) db.ref('configuracion/racha').set(input.value.trim());
 			}
 
 			function guardarEmpatesSistema() {
@@ -1181,4 +1216,3 @@
 		</script>
 	</body>
 </html>
-``` :3 ```
