@@ -91,7 +91,7 @@ function conectarFirebaseConDiscord() {
                     field.dispatchEvent(new Event('input', { bubbles: true }));
                     const btn = document.querySelector('button') || document.querySelector('input[type="submit"]');
                     if (btn) btn.click();
-                }, selectorInput, "mariokartwii"); 
+                }, selectorInput, "striker2026"); 
                 
                 await new Promise(r => setTimeout(r, 4000));
             }
